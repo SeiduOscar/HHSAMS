@@ -1,0 +1,264 @@
+/* Enhanced Sidebar Responsiveness - Mobile First Approach */
+
+/* CSS Custom Properties for consistent theming */
+:root {
+    --sidebar-width: 14rem;
+    --sidebar-collapsed-width: 6.5rem;
+    --sidebar-transition-duration: 0.3s;
+    --sidebar-z-index: 1050;
+    --overlay-z-index: 1049;
+    --breakpoint-xs: 320px;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+}
+
+/* Base sidebar styles with improved performance */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    z-index: var(--sidebar-z-index);
+    transition: transform var(--sidebar-transition-duration) ease-in-out;
+    will-change: transform;
+    contain: layout style;
+    background: linear-gradient(180deg, #f8f9fc 0%, #e8e9ec 100%);
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+/* Enhanced mobile-first responsive design */
+@media (max-width: 575.98px) {
+    .sidebar {
+        width: 100vw;
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.toggled {
+        transform: translateX(0);
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .sidebar {
+        width: 280px;
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.toggled {
+        transform: translateX(0);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .sidebar {
+        width: var(--sidebar-width);
+        transform: translateX(-100%);
+        position: fixed;
+    }
+    
+    .sidebar.toggled {
+        transform: translateX(0);
+    }
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        position: fixed;
+        transform: translateX(0);
+    }
+    
+    .sidebar.toggled {
+        width: var(--sidebar-collapsed-width);
+    }
+}
+
+/* Enhanced overlay/backdrop */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: var(--overlay-z-index);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--sidebar-transition-duration) ease-in-out,
+                visibility var(--sidebar-transition-duration) ease-in-out;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Touch-friendly improvements */
+.sidebar .nav-link {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+@media (max-width: 767.98px) {
+    .sidebar .nav-link {
+        padding: 1.25rem 1.5rem;
+        font-size: 1.1rem;
+    }
+}
+
+/* Enhanced toggle button for mobile */
+#sidebarToggleTop {
+    position: relative;
+    z-index: calc(var(--sidebar-z-index) + 1);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+#sidebarToggleTop:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#sidebarToggleTop:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+/* Smooth animations for all sidebar elements */
+.sidebar * {
+    transition: all 0.2s ease;
+}
+
+/* Collapsed state optimizations */
+.sidebar.toggled {
+    width: var(--sidebar-collapsed-width);
+}
+
+.sidebar.toggled .sidebar-brand-text,
+.sidebar.toggled .nav-link span {
+    display: none;
+}
+
+.sidebar.toggled .nav-link {
+    justify-content: center;
+    padding: 1rem 0.5rem;
+}
+
+.sidebar.toggled .nav-link i {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+/* Enhanced dropdown positioning for collapsed state */
+.sidebar.toggled .nav-item {
+    position: relative;
+}
+
+.sidebar.toggled .nav-item .collapse {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    width: 200px;
+    margin-left: 0.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+/* Improved focus states for accessibility */
+.sidebar .nav-link:focus {
+    outline: 2px solid #4e73df;
+    outline-offset: -2px;
+    background-color: rgba(78, 115, 223, 0.1);
+}
+
+/* Responsive content wrapper adjustments */
+#content-wrapper {
+    margin-left: 0;
+    transition: margin-left var(--sidebar-transition-duration) ease-in-out;
+}
+
+@media (min-width: 992px) {
+    #content-wrapper {
+        margin-left: var(--sidebar-width);
+    }
+    
+    #content-wrapper.sidebar-toggled {
+        margin-left: var(--sidebar-collapsed-width);
+    }
+}
+
+/* Mobile content wrapper adjustments */
+@media (max-width: 991.98px) {
+    #content-wrapper {
+        margin-left: 0;
+    }
+    
+    body.sidebar-open {
+        overflow: hidden;
+    }
+}
+
+/* Enhanced scrollbar for sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .sidebar {
+        border-right: 2px solid #000;
+    }
+    
+    .sidebar-overlay {
+        background: rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .sidebar *,
+    .sidebar-overlay,
+    #content-wrapper {
+        transition: none !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .sidebar,
+    .sidebar-overlay,
+    #sidebarToggleTop {
+        display: none !important;
+    }
+    
+    #content-wrapper {
+        margin-left: 0 !important;
+    }
+}
