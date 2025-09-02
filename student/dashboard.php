@@ -113,7 +113,8 @@ include '../Includes/dbcon.php';
                     </div>
                     <div>
                         <h5 class="mb-0 font-weight-bold" id="student-name">
-                            <?php echo htmlspecialchars($_SESSION['firstName']) . $_SESSION['lastName']; ?></h5>
+                            <?php echo htmlspecialchars($_SESSION['firstName'] . " " . $_SESSION['lastName']); ?>
+                        </h5>
                         <small class="text-muted">Student</small>
                     </div>
                 </div>

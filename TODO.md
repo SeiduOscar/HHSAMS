@@ -1,28 +1,13 @@
-# Sidebar Dropdown Menu Fix - TODO List
+# TODO: Fix Student Dashboard
 
-## Phase 1: Identify Missing Dependencies
-- [ ] Check if Bootstrap JS and jQuery are properly loaded
-- [ ] Verify all required CSS files are included
-- [ ] Test dropdown functionality on both ClassTeacher and Admin sidebars
+## Tasks to Complete
+- [ ] Add AJAX call to fetch attendance data from fetch_attendance.php and update attendance chart dynamically
+- [ ] Add AJAX call to fetch courses for the logged-in student and update "My Courses" section
+- [ ] Add AJAX call to fetch recent attendance records and update "Recent Attendance" list
+- [ ] Update change password form to submit via AJAX to change_password.php
+- [ ] Update QR scanner to call mark_attendance.php with scanned QR code and handle response
+- [ ] Test all changes to ensure dashboard is functional with real data
 
-## Phase 2: Fix JavaScript Dependencies
-- [ ] Add missing Bootstrap bundle JS
-- [ ] Add missing jQuery library
-- [ ] Ensure proper loading order of scripts
-
-## Phase 3: Enhance JavaScript Functionality
-- [ ] Create enhanced sidebar toggle functionality
-- [ ] Add proper dropdown initialization
-- [ ] Implement touch gestures for mobile
-- [ ] Add keyboard navigation support
-
-## Phase 4: CSS Fixes
-- [ ] Fix responsive CSS issues
-- [ ] Ensure proper z-index for dropdowns
-- [ ] Add mobile-friendly styles
-
-## Phase 5: Testing
-- [ ] Test dropdowns on all screen sizes
-- [ ] Test touch gestures on mobile
-- [ ] Test keyboard navigation
-- [ ] Verify accessibility features
+## Progress Tracking
+- Started: [Date/Time]
+- Completed: [Date/Time]
