@@ -1,3 +1,16 @@
+<?php
+
+if (!isset($_SESSION['studentId'])) {
+    header("Location: ../index.php");
+    exit();
+}
+
+include '../Includes/dbcon.php';
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -99,7 +112,8 @@
                         <i class="fas fa-user text-white"></i>
                     </div>
                     <div>
-                        <h5 class="mb-0 font-weight-bold" id="student-name">John Doe</h5>
+                        <h5 class="mb-0 font-weight-bold" id="student-name">
+                            <?php echo htmlspecialchars($_SESSION['firstName']) . $_SESSION['lastName']; ?></h5>
                         <small class="text-muted">Student</small>
                     </div>
                 </div>
