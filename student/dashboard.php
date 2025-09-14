@@ -1,6 +1,9 @@
 <?php
 
-if (!isset($_SESSION['studentId'])) {
+session_start();
+
+
+if (!isset( $_SESSION['admissionNumber'])) {
     header("Location: ../index.php");
     exit();
 }
@@ -113,7 +116,22 @@ include '../Includes/dbcon.php';
                     </div>
                     <div>
                         <h5 class="mb-0 font-weight-bold" id="student-name">
-                            <?php echo htmlspecialchars($_SESSION['firstName'] . " " . $_SESSION['lastName']); ?>
+                            
+                            <!-- <?php 
+                            $studNo = $_SESSION['admissionNumber'];
+                            $query = "SELECT * FROM tblstudents WHERE admissionNumber = '$studNo' ";
+                                            $rs = $conn->query($query);
+                                            $num = $rs->num_rows;
+                                            $rows = $rs->fetch_assoc();
+
+                                            if ($num > 0) {
+                                                
+                                                
+                                                $_SESSION['firstName'] = $rows['firstName'];
+                                                $_SESSION['lastName'] = $rows['lastName'];
+                                            }
+                            echo htmlspecialchars($_SESSION['firstName'] . " " . $_SESSION['lastName']); 
+                            // ?> -->
                         </h5>
                         <small class="text-muted">Student</small>
                     </div>
@@ -146,7 +164,7 @@ include '../Includes/dbcon.php';
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="logout-btn" class="nav-link d-flex align-items-center text-muted rounded">
+                    <a href="./logout.php" id="logout-btn" class="nav-link d-flex align-items-center text-muted rounded">
                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
                     </a>
                 </li>
@@ -172,18 +190,16 @@ include '../Includes/dbcon.php';
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-                                <span class="position-relative">
+                                <!-- <span class="position-relative">
                                     <i class="fas fa-bell text-gray-500"></i>
                                     <span
                                         class="position-absolute top-0 right-0 bg-danger text-white rounded-circle small px-1">3</span>
-                                </span>
+                                </span> -->
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
-                                <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-circle mr-2"
-                                    width="30">
-                                <span class="d-none d-md-inline text-gray-700">John</span>
+                                <span class="d-none d-md-inline text-gray-700"><?php echo htmlspecialchars($_SESSION['firstName'] . " " . $_SESSION['lastName']) ?></span>
                             </a>
                         </li>
                     </ul>
@@ -196,15 +212,68 @@ include '../Includes/dbcon.php';
                     <div class="card mb-4">
                         <div class="card-body">
                             <h2 class="h4 font-weight-bold text-gray-800 mb-4">Welcome, <span id="welcome-name"
-                                    class="text-primary">John</span>!</h2>
+                                    class="text-primary"><?php echo htmlspecialchars($_SESSION['firstName']) ?></span>!</h2>
                             <div class="row mb-4">
                                 <div class="col-md-4 mb-3">
                                     <div class="card stat-card courses">
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <div>
+                                                <div><?php
+                                                    $levels = [
+    ['level' => '100', 'condition' => 'num_sem BETWEEN 1 AND 2'],
+    ['level' => '200', 'condition' => 'num_sem BETWEEN 3 AND 4'],
+    ['level' => '300', 'condition' => 'num_sem BETWEEN 5 AND 6'],
+    ['level' => '400', 'condition' => 'num_sem BETWEEN 7 AND 8'],
+    ['level' => 'Alumni',    'condition' => 'num_sem >= 9'],
+];
+
+$level = null; // default
+
+foreach ($levels as $item) {
+    $query = "SELECT 1 FROM tblstudents WHERE {$item['condition']} AND admissionNumber = ?";
+    $stmt = $conn->prepare($query);
+
+    if ($stmt) {
+        $stmt->bind_param('s', $studNo);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $level = $item['level']; // ✅ assign the matching level
+            $stmt->close();
+            break; // stop once we find the level
+        }
+        $stmt->close();
+    }
+}
+// $level now contains "Level 100", "Level 200", ..., or "Alumni"
+
+
+$studProgram = $rows['program'];
+
+// Get active semester
+$activeSemester = mysqli_query($conn, "SELECT * FROM tblsemester WHERE IsActive = 1");
+$semRow = mysqli_fetch_assoc($activeSemester);
+$CurntSemId = $semRow['Id'];
+
+// Query courses: match exact program OR any course where program contains the student's program (e.g. IT inside IT/IS)
+// Also include general courses
+$studCourses = mysqli_query(
+    $conn,
+    "SELECT * 
+     FROM tblcourses 
+     WHERE Level = '$level' 
+       AND (program = '$studProgram' OR program LIKE '%$studProgram%' OR general = 1)"
+);
+
+// Fetch all courses
+$numOfCourses = mysqli_num_rows($studCourses);
+
+
+                                                    
+?>
                                                     <p class="text-muted small mb-1">Total Courses</p>
-                                                    <h3 class="h5 font-weight-bold">5</h3>
+                                                    <h3 class="h5 font-weight-bold"><?php echo $numOfCourses ?></h3>
                                                 </div>
                                                 <div class="bg-primary rounded-circle p-3">
                                                     <i class="fas fa-book text-white"></i>
@@ -233,8 +302,8 @@ include '../Includes/dbcon.php';
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <p class="text-muted small mb-1">Recent Activity</p>
-                                                    <h3 class="h5 font-weight-bold">3</h3>
+                                                    <p class="text-muted small mb-1">Current Semester</p>
+                                                    <h3 class="h5 font-weight-bold"><?php echo $semRow['semesterName'] ?></h3>
                                                 </div>
                                                 <div class="bg-warning rounded-circle p-3">
                                                     <i class="fas fa-clock text-white"></i>
@@ -249,7 +318,7 @@ include '../Includes/dbcon.php';
                                 <div class="col-lg-6 mb-4">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h3 class="h5 font-weight-bold text-gray-800 mb-3">Recent Attendance</h3>
+                                            <h3 class="h5 font-weight-bold text-gray-800 mb-3">Recent Present Attendance</h3>
                                             <div class="list-group">
                                                 <div
                                                     class="list-group-item d-flex justify-content-between align-items-center">
@@ -297,7 +366,7 @@ include '../Includes/dbcon.php';
                                 <div class="col-lg-6 mb-4">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h3 class="h5 font-weight-bold text-gray-800 mb-3">Upcoming Classes</h3>
+                                            <h3 class="h5 font-weight-bold text-gray-800 mb-3">Recent Absent Attendance</h3>
                                             <div class="list-group">
                                                 <div
                                                     class="list-group-item d-flex justify-content-between align-items-center">
@@ -380,75 +449,66 @@ include '../Includes/dbcon.php';
                 </section>
 
                 <!-- My Courses Section -->
-                <section id="courses-section" class="d-none">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h2 class="h4 font-weight-bold text-gray-800 mb-4">My Courses</h2>
-                            <div class="row">
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card course-card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <h3 class="h5 font-weight-bold">Mathematics</h3>
-                                                <span class="badge badge-primary">Active</span>
-                                            </div>
-                                            <p class="text-muted small mb-4">MATH101</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="bg-light rounded-circle p-2 mr-2">
-                                                        <i class="fas fa-user text-primary"></i>
-                                                    </div>
-                                                    <span class="small">Prof. Smith</span>
-                                                </div>
-                                                <span class="text-muted small">Mon, Wed, Fri</span>
-                                            </div>
-                                        </div>
+              <section id="courses-section" class="d-none">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="h4 font-weight-bold text-gray-800 mb-4">My Courses</h2>
+            <div class="row">
+                <?php 
+                $studCourses = mysqli_query(
+                    $conn,
+                    "SELECT * 
+                     FROM tblcourses 
+                     WHERE Level = '$level' 
+                       AND (program = '$studProgram' OR program LIKE '%$studProgram%' OR general = 1)"
+                );
+
+                if ($studCourses && mysqli_num_rows($studCourses) > 0) {
+                    while ($courDetails = mysqli_fetch_assoc($studCourses)) {
+                        $lecId = $courDetails['lecturer_id'];
+                        $lecturer = "TBA";
+
+                        // Fetch lecturer
+                        $lecturerQuery = mysqli_query($conn, "SELECT * FROM tblmoderator WHERE Id ='$lecId'");
+                        if ($lecturerQuery && mysqli_num_rows($lecturerQuery) > 0) {
+                            $lecturerfetch = mysqli_fetch_assoc($lecturerQuery);
+                            $lecturer = $lecturerfetch['firstName'] . " " . $lecturerfetch['lastName'];
+                        }
+                ?>
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card course-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3 class="h5 font-weight-bold">
+                                            <?php echo htmlspecialchars($courDetails['courseName']); ?>
+                                        </h3>
+                                        <span class="badge badge-primary">Active</span>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card course-card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <h3 class="h5 font-weight-bold">Physics</h3>
-                                                <span class="badge badge-primary">Active</span>
+                                    <p class="text-muted small mb-4">
+                                        <?php echo htmlspecialchars($courDetails['courseCode']); ?>
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-light rounded-circle p-2 mr-2">
+                                                <i class="fas fa-user text-primary"></i>
                                             </div>
-                                            <p class="text-muted small mb-4">PHYS201</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="bg-light rounded-circle p-2 mr-2">
-                                                        <i class="fas fa-user text-primary"></i>
-                                                    </div>
-                                                    <span class="small">Dr. Johnson</span>
-                                                </div>
-                                                <span class="text-muted small">Tue, Thu</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card course-card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <h3 class="h5 font-weight-bold">Chemistry</h3>
-                                                <span class="badge badge-primary">Active</span>
-                                            </div>
-                                            <p class="text-muted small mb-4">CHEM101</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="bg-light rounded-circle p-2 mr-2">
-                                                        <i class="fas fa-user text-primary"></i>
-                                                    </div>
-                                                    <span class="small">Prof. Williams</span>
-                                                </div>
-                                                <span class="text-muted small">Mon, Wed</span>
-                                            </div>
+                                            <span class="small"><?php echo htmlspecialchars($lecturer); ?></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                <?php
+                    } // end while
+                } else {
+                    echo "<div class='col-12'><p class='text-muted'>No courses available.</p></div>";
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</section>
+
 
                 <!-- Attendance History Section -->
                 <section id="attendance-section" class="d-none">
@@ -660,13 +720,16 @@ include '../Includes/dbcon.php';
                 const target = this.getAttribute('href').substring(1);
                 if (target === 'dashboard') {
                     $(sections.dashboard).removeClass('d-none');
+                    fetchRecentAttendance();
                 } else if (target === 'qr-scanner') {
                     $(sections.qrScanner).removeClass('d-none');
                 } else if (target === 'courses') {
                     $(sections.courses).removeClass('d-none');
+                    fetchCourses();
                 } else if (target === 'attendance') {
                     $(sections.attendance).removeClass('d-none');
                     initAttendanceChart();
+                    fetchRecentAttendance();
                 } else if (target === 'change-password') {
                     $(sections.changePassword).removeClass('d-none');
                 }
@@ -676,28 +739,200 @@ include '../Includes/dbcon.php';
         // Set dashboard as active by default
         document.querySelector('.nav-link.active').click();
 
-        // Initialize QR Scanner
-        initQRScanner();
 
-        // Initialize attendance chart
-        initAttendanceChart();
 
-        // Password toggle functionality
-        $('.toggle-password').click(function() {
-            const targetId = $(this).data('target');
-            const input = $('#' + targetId);
-            const icon = $(this).find('i');
+        // Fetch and update attendance chart with real data
+        function fetchAttendanceData(fromDate = '', toDate = '') {
+            $.ajax({
+                url: 'fetch_attendance.php',
+                method: 'GET',
+                data: {
+                    from: fromDate,
+                    to: toDate
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (window.attendanceChart) {
+                        window.attendanceChart.data.labels = data.labels;
+                        window.attendanceChart.data.datasets[0].data = data.present;
+                        window.attendanceChart.data.datasets[1].data = data.absent;
+                        window.attendanceChart.update();
+                    }
+                },
+                error: function() {
+                    console.error('Failed to fetch attendance data');
+                }
+            });
+        }
 
-            if (input.attr('type') === 'password') {
-                input.attr('type', 'text');
-                icon.removeClass('fa-eye').addClass('fa-eye-slash');
-            } else {
-                input.attr('type', 'password');
-                icon.removeClass('fa-eye-slash').addClass('fa-eye');
-            }
-        });
+        // Initialize attendance chart with empty data and store chart instance globally
+        function initAttendanceChart() {
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            window.attendanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                            label: 'Present (%)',
+                            data: [],
+                            borderColor: 'rgba(40, 167, 69, 1)',
+                            backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                            tension: 0.1,
+                            fill: true
+                        },
+                        {
+                            label: 'Absent (%)',
+                            data: [],
+                            borderColor: 'rgba(220, 53, 69, 1)',
+                            backgroundColor: 'rgba(220, 53, 69, 0.2)',
+                            tension: 0.1,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            // Fetch initial attendance data
+            fetchAttendanceData();
+        }
 
-        // Change password form submission
+        // Fetch and display courses dynamically
+        function fetchCourses() {
+            $.ajax({
+                url: 'fetch_courses.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function(courses) {
+                    const coursesSection = $('#courses-section .row');
+                    coursesSection.empty();
+                    if (courses.length === 0) {
+                        coursesSection.append('<p>No courses found.</p>');
+                        return;
+                    }
+                    courses.forEach(course => {
+                        const courseCard = `
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card course-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3 class="h5 font-weight-bold">${course.name}</h3>
+                                        <span class="badge badge-primary">${course.status}</span>
+                                    </div>
+                                    <p class="text-muted small mb-4">${course.code}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-light rounded-circle p-2 mr-2">
+                                                <i class="fas fa-user text-primary"></i>
+                                            </div>
+                                            <span class="small">${course.instructor}</span>
+                                        </div>
+                                        <span class="text-muted small">${course.schedule}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                        coursesSection.append(courseCard);
+                    });
+                },
+                error: function() {
+                    console.error('Failed to fetch courses');
+                }
+            });
+        }
+
+        // Fetch and display recent attendance records dynamically
+        function fetchRecentAttendance() {
+            $.ajax({
+                url: 'fetch_recent_attendance.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function(records) {
+                    // Update attendance section table
+                    const recentAttendanceTableBody = $('#attendance-section tbody');
+                    recentAttendanceTableBody.empty();
+                    if (records.length === 0) {
+                        recentAttendanceTableBody.append(
+                            '<tr><td colspan="3">No attendance records found.</td></tr>');
+                    } else {
+                        records.forEach(record => {
+                            const statusBadge = record.status === '1' ?
+                                '<span class="badge badge-success">Present</span>' :
+                                '<span class="badge badge-danger">Absent</span>';
+                            const row = `
+                            <tr>
+                                <td class="small">${record.date}</td>
+                                <td class="small">${record.course}</td>
+                                <td>${statusBadge}</td>
+                            </tr>`;
+                            recentAttendanceTableBody.append(row);
+                        });
+                    }
+
+                    // Update dashboard recent attendance list
+                    const dashboardAttendanceList = $('#dashboard-section .list-group');
+                    dashboardAttendanceList.empty();
+                    if (records.length === 0) {
+                        dashboardAttendanceList.append(
+                            '<div class="list-group-item text-muted">No recent attendance records found.</div>'
+                        );
+                    } else {
+                        // Show only the first 3 records for dashboard
+                        const displayRecords = records.slice(0, 3);
+                        displayRecords.forEach(record => {
+                            const statusClass = record.status === '1' ? 'success' :
+                                'danger';
+                            const statusIcon = record.status === '1' ? 'fa-check' :
+                                'fa-times';
+                            const statusText = record.status === '1' ? 'Present' : 'Absent';
+                            const badgeClass = record.status === '1' ? 'badge-success' :
+                                'badge-danger';
+
+                            const listItem = `
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-${statusClass} rounded-circle p-2 mr-3">
+                                        <i class="fas ${statusIcon} text-white small"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-weight-bold mb-0">${record.course}</p>
+                                        <small class="text-muted">${record.date}</small>
+                                    </div>
+                                </div>
+                                <span class="badge ${badgeClass}">${statusText}</span>
+                            </div>`;
+                            dashboardAttendanceList.append(listItem);
+                        });
+                    }
+                },
+                error: function() {
+                    console.error('Failed to fetch recent attendance records');
+                }
+            });
+        }
+
+        // Change password form submission via AJAX
         $('#change-password-form').submit(function(e) {
             e.preventDefault();
 
@@ -720,183 +955,157 @@ include '../Includes/dbcon.php';
                 return;
             }
 
-            // Simulate AJAX call
-            setTimeout(() => {
-                showMessage('Password changed successfully!', 'success');
-                $('#change-password-form')[0].reset();
-            }, 1000);
+            $.ajax({
+                url: 'change_password.php',
+                method: 'POST',
+                data: {
+                    currentPassword: currentPassword,
+                    newPassword: newPassword,
+                    confirmNewPassword: confirmPassword
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        showMessage(response.message, 'success');
+                        $('#change-password-form')[0].reset();
+                    } else {
+                        showMessage(response.message, 'error');
+                    }
+                },
+                error: function() {
+                    showMessage('Failed to change password. Please try again.', 'error');
+                }
+            });
         });
 
         // Logout button
         $('#logout-btn').click(function() {
-            alert('You have been logged out. In a real app, this would redirect to the login page.');
+            alert('You have been logged out.  This would redirect to the login page.');
+             window.location = (\"../index.php\");
         });
-    });
 
-    // Initialize QR Scanner
-    function initQRScanner() {
-        const qrReader = document.getElementById('qr-reader');
-        const qrReaderResults = $('#qr-reader-results');
-        const scanResult = $('#scan-result');
-        const startScanBtn = $('#start-scan-btn');
-        const stopScanBtn = $('#stop-scan-btn');
-        const scanAgainBtn = $('#scan-again-btn');
-        const closeScanBtn = $('#close-scan-btn');
+        // QR Scanner integration with mark_attendance.php
+        function initQRScanner() {
+            const qrReader = document.getElementById('qr-reader');
+            const qrReaderResults = $('#qr-reader-results');
+            const scanResult = $('#scan-result');
+            const startScanBtn = $('#start-scan-btn');
+            const stopScanBtn = $('#stop-scan-btn');
+            const scanAgainBtn = $('#scan-again-btn');
+            const closeScanBtn = $('#close-scan-btn');
 
-        // Start scan button
-        startScanBtn.click(function() {
-            if (qrScannerActive) return;
+            let html5QrCode;
+            let qrScannerActive = false;
 
-            html5QrCode = new Html5Qrcode("qr-reader");
-            const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-                handleScanSuccess(decodedText, decodedResult);
-            };
+            // Start scan button
+            startScanBtn.click(function() {
+                if (qrScannerActive) return;
 
-            const config = {
-                fps: 10,
-                qrbox: 250
-            };
+                html5QrCode = new Html5Qrcode("qr-reader");
+                const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+                    handleScanSuccess(decodedText, decodedResult);
+                };
 
-            html5QrCode.start({
-                    facingMode: "environment"
-                },
-                config,
-                qrCodeSuccessCallback,
-                () => {} // No verbose logging
-            ).then(() => {
-                qrScannerActive = true;
-                startScanBtn.addClass('d-none');
-                stopScanBtn.removeClass('d-none');
-                qrReaderResults.addClass('d-none');
-            }).catch(err => {
-                console.error("Error starting QR scanner:", err);
-                alert("Could not start QR scanner. Please ensure camera access is allowed.");
+                const config = {
+                    fps: 10,
+                    qrbox: 250
+                };
+
+                html5QrCode.start({
+                        facingMode: "environment"
+                    },
+                    config,
+                    qrCodeSuccessCallback,
+                    () => {} // No verbose logging
+                ).then(() => {
+                    qrScannerActive = true;
+                    startScanBtn.addClass('d-none');
+                    stopScanBtn.removeClass('d-none');
+                    qrReaderResults.addClass('d-none');
+                }).catch(err => {
+                    console.error("Error starting QR scanner:", err);
+                    alert(
+                        "Could not start QR scanner. Please ensure camera access is allowed."
+                    );
+                });
             });
-        });
 
-        // Stop scan button
-        stopScanBtn.click(function() {
-            if (!qrScannerActive) return;
+            // Stop scan button
+            stopScanBtn.click(function() {
+                if (!qrScannerActive) return;
 
-            html5QrCode.stop().then(() => {
-                qrScannerActive = false;
-                stopScanBtn.addClass('d-none');
-                startScanBtn.removeClass('d-none');
-            }).catch(err => {
-                console.error("Error stopping QR scanner:", err);
-            });
-        });
-
-        // Scan again button
-        scanAgainBtn.click(function() {
-            qrReaderResults.addClass('d-none');
-            startScanBtn.click();
-        });
-
-        // Close scan button
-        closeScanBtn.click(function() {
-            if (qrScannerActive) {
                 html5QrCode.stop().then(() => {
                     qrScannerActive = false;
+                    stopScanBtn.addClass('d-none');
+                    startScanBtn.removeClass('d-none');
                 }).catch(err => {
-                    console.error("Error stopping scanner:", err);
+                    console.error("Error stopping QR scanner:", err);
                 });
-            }
-            qrReaderResults.addClass('d-none');
-            stopScanBtn.addClass('d-none');
-            startScanBtn.removeClass('d-none');
-        });
+            });
 
-        // Handle scan success
-        function handleScanSuccess(decodedText, decodedResult) {
-            html5QrCode.stop().then(() => {
-                qrScannerActive = false;
+            // Scan again button
+            scanAgainBtn.click(function() {
+                qrReaderResults.addClass('d-none');
+                startScanBtn.click();
+            });
+
+            // Close scan button
+            closeScanBtn.click(function() {
+                if (qrScannerActive) {
+                    html5QrCode.stop().then(() => {
+                        qrScannerActive = false;
+                    }).catch(err => {
+                        console.error("Error stopping scanner:", err);
+                    });
+                }
+                qrReaderResults.addClass('d-none');
                 stopScanBtn.addClass('d-none');
                 startScanBtn.removeClass('d-none');
-
-                scanResult.text(decodedText);
-                qrReaderResults.removeClass('d-none');
-
-                console.log("QR Code scanned:", decodedText);
-
-                // Simulate attendance marking
-                setTimeout(() => {
-                    alert(`Attendance marked successfully for: ${decodedText}`);
-                }, 500);
-            }).catch(err => {
-                console.error("Error stopping scanner after success:", err);
             });
-        }
-    }
 
-    // Initialize Attendance Chart
-    function initAttendanceChart() {
-        const ctx = document.getElementById('attendanceChart').getContext('2d');
+            // Handle scan success
+            function handleScanSuccess(decodedText, decodedResult) {
+                html5QrCode.stop().then(() => {
+                    qrScannerActive = false;
+                    stopScanBtn.addClass('d-none');
+                    startScanBtn.removeClass('d-none');
 
-        // Sample data
-        const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-        const presentData = [85, 79, 92, 88, 91, 87];
-        const absentData = [15, 21, 8, 12, 9, 13];
+                    scanResult.text(decodedText);
+                    qrReaderResults.removeClass('d-none');
 
-        const chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                        label: 'Present (%)',
-                        data: presentData,
-                        borderColor: 'rgba(40, 167, 69, 1)',
-                        backgroundColor: 'rgba(40, 167, 69, 0.2)',
-                        tension: 0.1,
-                        fill: true
-                    },
-                    {
-                        label: 'Absent (%)',
-                        data: absentData,
-                        borderColor: 'rgba(220, 53, 69, 1)',
-                        backgroundColor: 'rgba(220, 53, 69, 0.2)',
-                        tension: 0.1,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            callback: function(value) {
-                                return value + '%';
+                    console.log("QR Code scanned:", decodedText);
+
+                    // Call mark_attendance.php to mark attendance
+                    $.ajax({
+                        url: 'mark_attendance.php',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            qrCode: decodedText
+                        }),
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.message);
+                                // Refresh attendance data and recent attendance list
+                                fetchAttendanceData();
+                                fetchRecentAttendance();
+                            } else {
+                                alert('Failed to mark attendance: ' + response.message);
                             }
+                        },
+                        error: function() {
+                            alert('Error marking attendance. Please try again.');
                         }
-                    }
-                }
+                    });
+                }).catch(err => {
+                    console.error("Error stopping scanner after success:", err);
+                });
             }
-        });
-    }
-
-    // Show message in change password form
-    function showMessage(message, type) {
-        const messageDiv = $('#password-message');
-        messageDiv.text(message).removeClass('d-none');
-
-        if (type === 'error') {
-            messageDiv.removeClass('alert-success').addClass('alert-danger');
-        } else {
-            messageDiv.removeClass('alert-danger').addClass('alert-success');
         }
-    }
+
+
+    });
     </script>
 </body>
 

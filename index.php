@@ -139,7 +139,7 @@ session_start();
 
                                             if ($num > 0) {
 
-                                                $_SESSION['studentId'] = $rows['admissionNumber'];
+
                                                 $_SESSION['firstName'] = $rows['firstName'];
                                                 $_SESSION['lastName'] = $rows['lastName'];
                                                 $_SESSION['admissionNumber'] = $rows['admissionNumber'];

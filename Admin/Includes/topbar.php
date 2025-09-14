@@ -1,6 +1,8 @@
 <?php
 
-if (empty($fullName)) {
+// session_start();
+
+if (!isset($_SESSION['userId'])) {
   echo "<script>alert('Session Expired. Please Login Again');</script>";
   echo "<meta http-equiv='refresh' content='0; url=../index.php'>";
 }

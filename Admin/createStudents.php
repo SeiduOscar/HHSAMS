@@ -6,41 +6,41 @@ include '../Includes/session.php';
 //------------------------SAVE--------------------------------------------------
 
 if (isset($_POST['save'])) {
-  $firstName = $_POST['firstName'];
-  $lastName = $_POST['lastName'];
-  $otherName = $_POST['otherName'];
-  $admissionNumber = $_POST['admissionNumber'];
-  $classId = $_POST['classId'];
-  $classArmId = $_POST['classArmId'];
-  $dateCreated = date("Y-m-d");
+    $firstName = $_POST['firstName'];
+    $lastName = $_POST['lastName'];
+    $otherName = $_POST['otherName'];
+    $admissionNumber = $_POST['admissionNumber'];
+    $classId = $_POST['classId'];
+    $classArmId = $_POST['classArmId'];
+    $dateCreated = date("Y-m-d");
 
-  // Check for duplicate student
-  $query = mysqli_query($conn, "SELECT * FROM tblstudents WHERE admissionNumber ='$admissionNumber'");
-  if (mysqli_num_rows($query) > 0) {
-    $statusMsg = "<div class='alert alert-danger'>Admission number already exists!</div>";
-  } else {
-    // Check if class arm is already assigned to another student
-    $query = mysqli_query($conn, "SELECT * FROM tblclassarms WHERE Id ='$classArmId'");
+    // Check for duplicate student
+    $query = mysqli_query($conn, "SELECT * FROM tblstudents WHERE admissionNumber ='$admissionNumber'");
     if (mysqli_num_rows($query) > 0) {
-      // Proceed to insert new student
-      $query = mysqli_query($conn, "INSERT INTO tblstudents(firstName,lastName,otherName,admissionNumber,password,classId,classArmId,dateCreated) 
+        $statusMsg = "<div class='alert alert-danger'>Admission number already exists!</div>";
+    } else {
+        // Check if class arm is already assigned to another student
+        $query = mysqli_query($conn, "SELECT * FROM tblclassarms WHERE Id ='$classArmId'");
+        if (mysqli_num_rows($query) > 0) {
+            // Proceed to insert new student
+            $query = mysqli_query($conn, "INSERT INTO tblstudents(firstName,lastName,otherName,admissionNumber,password,classId,classArmId,dateCreated) 
             VALUES('$firstName','$lastName','$otherName','$admissionNumber','12345','$classId','$classArmId','$dateCreated')");
 
-      if ($query) {
-        echo "<script>
+            if ($query) {
+                echo "<script>
                     alert('Created Successfully!');
                     window.location.href = 'createStudents.php';
                     </script>";
-        exit(); // Ensure nothing continues running
-      } else {
-        $statusMsg = "<div class='alert alert-danger'>Insert failed. Please try again.</div>";
-      }
-    } else {
-      $statusMsg = "<div class='alert alert-danger'>Invalid class arm!</div>";
+                exit(); // Ensure nothing continues running
+            } else {
+                $statusMsg = "<div class='alert alert-danger'>Insert failed. Please try again.</div>";
+            }
+        } else {
+            $statusMsg = "<div class='alert alert-danger'>Invalid class arm!</div>";
+        }
     }
-  }
-  $statusMsg = "<div class='alert alert-success'  style='margin-right:700px;'>Created Successfully!</div>";
-  echo "<script type = \"text/javascript\">
+    $statusMsg = "<div class='alert alert-success'  style='margin-right:700px;'>Created Successfully!</div>";
+    echo "<script type = \"text/javascript\">
     window.location = (\"createStudents.php\")
     </script>";
 
@@ -59,38 +59,38 @@ if (isset($_POST['save'])) {
 //--------------------EDIT------------------------------------------------------------
 
 if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
-  $Id = $_GET['Id'];
+    $Id = $_GET['Id'];
 
-  $query = mysqli_query($conn, "select * from tblstudents where Id ='$Id'");
-  $row = mysqli_fetch_array($query);
+    $query = mysqli_query($conn, "select * from tblstudents where Id ='$Id'");
+    $row = mysqli_fetch_array($query);
 
-  //------------UPDATE-----------------------------
+    //------------UPDATE-----------------------------
 
-  if (isset($_POST['update'])) {
+    if (isset($_POST['update'])) {
 
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $otherName = $_POST['otherName'];
+        $firstName = $_POST['firstName'];
+        $lastName = $_POST['lastName'];
+        $otherName = $_POST['otherName'];
 
-    $admissionNumber = $_POST['admissionNumber'];
-    $classId = $_POST['classId'];
-    $classArmId = $_POST['classArmId'];
-    $dateCreated = date("Y-m-d");
+        $admissionNumber = $_POST['admissionNumber'];
+        $classId = $_POST['classId'];
+        $classArmId = $_POST['classArmId'];
+        $dateCreated = date("Y-m-d");
 
-    $query = mysqli_query($conn, "update tblstudents set firstName='$firstName', lastName='$lastName',
+        $query = mysqli_query($conn, "update tblstudents set firstName='$firstName', lastName='$lastName',
     otherName='$otherName', admissionNumber='$admissionNumber',password='12345', classId='$classId',classArmId='$classArmId'
     where Id='$Id'");
-    if ($query) {
+        if ($query) {
 
-      echo "<script type = \"text/javascript\">
+            echo "<script type = \"text/javascript\">
                 window.location = (\"createStudents.php\")
                 </script>";
-    } else {
-      $statusMsg = "<div class='alert alert-danger' style='margin-right:700px;'>An error Occurred!</div>";
+        } else {
+            $statusMsg = "<div class='alert alert-danger' style='margin-right:700px;'>An error Occurred!</div>";
+        }
     }
-  }
-  $statusMsg = "<div class='alert alert-success'  style='margin-right:700px;'>Created Successfully!</div>";
-  echo "<script type = \"text/javascript\">
+    $statusMsg = "<div class='alert alert-success'  style='margin-right:700px;'>Created Successfully!</div>";
+    echo "<script type = \"text/javascript\">
     window.location = (\"createStudents.php\")
     </script>";
 
@@ -100,22 +100,22 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "edit") {
 //--------------------------------DELETE------------------------------------------------------------------
 
 if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete") {
-  $Id = $_GET['Id'];
-  $classArmId = $_GET['classArmId'];
+    $Id = $_GET['Id'];
+    $classArmId = $_GET['classArmId'];
 
-  $query = mysqli_query($conn, "DELETE FROM tblstudents WHERE Id='$Id'");
+    $query = mysqli_query($conn, "DELETE FROM tblstudents WHERE Id='$Id'");
 
-  if ($query == TRUE) {
+    if ($query == TRUE) {
 
-    echo "<script type = \"text/javascript\">
+        echo "<script type = \"text/javascript\">
             window.location = (\"createStudents.php\")
             </script>";
-  } else {
+    } else {
 
-    $statusMsg = "<div class='alert alert-danger' style='margin-right:700px;'>An error Occurred!</div>";
-  }
-  $statusMsg = "<div class='alert alert-success'  style='margin-right:700px;'>Created Successfully!</div>";
-  echo "<script type = \"text/javascript\">
+        $statusMsg = "<div class='alert alert-danger' style='margin-right:700px;'>An error Occurred!</div>";
+    }
+    $statusMsg = "<div class='alert alert-success'  style='margin-right:700px;'>Created Successfully!</div>";
+    echo "<script type = \"text/javascript\">
     window.location = (\"createStudents.php\")
     </script>";
 
@@ -135,6 +135,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
     <meta name="author" content="">
     <link href="img/logo/attnlg.jpg" rel="icon">
     <?php include 'includes/title.php'; ?>
+
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -151,19 +152,47 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
         /* adjust as needed */
 
         color: white;
-        overflow-y: auto;
+        /* overflow-y: no; */
         z-index: 1000;
     }
 
     #content-wrapper {
         margin-left: 220px;
         /* same as #sidebar width */
-
+        transition: margin-left 0.3s ease;
         /* optional for spacing */
+    }
+
+    body.sidebar-toggled #content-wrapper {
+        margin-left: 0 !important;
+    }
+
+    .sidebar.toggled {
+        width: 0 !important;
+        overflow: hidden;
+        transition: width 0.3s ease;
     }
 
     #main-content {
         margin-left: 10px;
+    }
+    </style>
+
+    <style>
+    @media (max-width: 768px) {
+        #sidebar {
+            position: fixed;
+            width: 100%;
+            height: auto;
+        }
+
+        #content-wrapper {
+            margin-left: 0;
+        }
+
+        .sidebar.toggled {
+            width: 100% !important;
+        }
     }
     </style>
 
@@ -222,7 +251,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
 
 <body id="page-top">
     <div id="wrapper">
-        <div id="sidebar">
+        <div id="sidebar" class="sidebar">
             <!-- Sidebar -->
             <?php include "Includes/sidebar.php"; ?>
             <!-- Sidebar -->
@@ -247,31 +276,31 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
                     </form>
 
                     <?php
-          $link = ""; // Initialize
-          if (isset($_POST['addMultipleStudents'])) {
-            $token = bin2hex(random_bytes(16));
-            $_SESSION['qrcode_token'] = $token;
-            $validPeriod = $_POST['valid_duration'];
+                    $link = ""; // Initialize
+                    if (isset($_POST['addMultipleStudents'])) {
+                        $token = bin2hex(random_bytes(16));
+                        $_SESSION['qrcode_token'] = $token;
+                        $validPeriod = $_POST['valid_duration'];
 
-            // Insert token into database
-            $stmtInsert = $conn->prepare("INSERT INTO qr_tokens (token, is_valid, created_at) VALUES (?, 1, NOW())");
-            $stmtInsert->bind_param("s", $token);
-            $stmtInsert->execute();
-            $stmtInsert->close();
+                        // Insert token into database
+                        $stmtInsert = $conn->prepare("INSERT INTO qr_tokens (token, is_valid, created_at) VALUES (?, 1, NOW())");
+                        $stmtInsert->bind_param("s", $token);
+                        $stmtInsert->execute();
+                        $stmtInsert->close();
 
-            // Verify token validity
-            $stmt = $conn->prepare("SELECT COUNT(*) FROM qr_tokens WHERE token = ? AND is_valid = 1 and created_at > NOW() - INTERVAL ? HOUR");
-            $stmt->bind_param("si", $token, $validPeriod);
-            $stmt->execute();
-            $stmt->bind_result($count);
-            $stmt->fetch();
-            $stmt->close();
+                        // Verify token validity
+                        $stmt = $conn->prepare("SELECT COUNT(*) FROM qr_tokens WHERE token = ? AND is_valid = 1 and created_at > NOW() - INTERVAL ? HOUR");
+                        $stmt->bind_param("si", $token, $validPeriod);
+                        $stmt->execute();
+                        $stmt->bind_result($count);
+                        $stmt->fetch();
+                        $stmt->close();
 
-            if ($count > 0) {
-              $link = "https://192.168.94.143/Student-Attendance-Management-System-main/create_students.php?token=$token&valid=$validPeriod";
-            }
-          }
-          ?>
+                        if ($count > 0) {
+                            $link = "https://172.16.1.141/Student-Attendance-Management-System-main/create_students.php?token=$token&valid=$validPeriod";
+                        }
+                    }
+                    ?>
 
                     <!-- Link container (hidden by default) -->
                     <?php if (!empty($link)): ?>
@@ -298,63 +327,64 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
 
                     <!-- Input Group -->
                     <?php
-          // Assume $conn is your MySQLi connection
-          
-          $limit = 10;  // results per page
-          $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
-          if ($page < 1)
-            $page = 1;
+                    // Assume $conn is your MySQLi connection
+                    
+                    $limit = 10;  // results per page
+                    $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
+                    if ($page < 1)
+                        $page = 1;
 
-          $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-          $classArmFilter = isset($_GET['classArm']) ? trim($_GET['classArm']) : '';
+                    $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+                    $classArmFilter = isset($_GET['classArm']) ? trim($_GET['classArm']) : '';
 
-          $search_escaped = $conn->real_escape_string($search);
-          $classArm_escaped = $conn->real_escape_string($classArmFilter);
+                    $search_escaped = $conn->real_escape_string($search);
+                    $classArm_escaped = $conn->real_escape_string($classArmFilter);
 
-          // Build WHERE conditions for search and filter
-          $whereClauses = [];
+                    // Build WHERE conditions for search and filter
+                    $whereClauses = [];
 
-          if ($search !== '') {
-            $whereClauses[] = "(firstName LIKE '%$search_escaped%' OR lastName LIKE '%$search_escaped%')";
-          }
-          if ($classArmFilter !== '') {
-            // Assuming classArm is stored as string or id in tblstudents.classArm
-            $whereClauses[] = "classArm = '$classArm_escaped'";
-          }
+                    if ($search !== '') {
+                        $whereClauses[] = "(firstName LIKE '%$search_escaped%' OR lastName LIKE '%$search_escaped%')";
+                    }
+                    if ($classArmFilter !== '') {
+                        // Assuming classArm is stored as string or id in tblstudents.classArm
+                        $whereClauses[] = "classArm = '$classArm_escaped'";
+                    }
 
-          $where = '';
-          if (count($whereClauses) > 0) {
-            $where = "WHERE " . implode(" AND ", $whereClauses);
-          }
+                    $where = '';
+                    if (count($whereClauses) > 0) {
+                        $where = "WHERE " . implode(" AND ", $whereClauses);
+                    }
 
-          // Get total rows count for pagination
-          $countSql = "SELECT COUNT(*) AS total FROM tblstudents $where";
-          $countResult = $conn->query($countSql);
-          $totalRows = 0;
-          if ($countResult) {
-            $row = $countResult->fetch_assoc();
-            $totalRows = (int) $row['total'];
-          }
-          $totalPages = ceil($totalRows / $limit);
-          if ($page > $totalPages && $totalPages > 0) {
-            $page = $totalPages;  // clamp page if out of range
-          }
-          $offset = ($page - 1) * $limit;
+                    // Get total rows count for pagination
+                    $countSql = "SELECT COUNT(*) AS total FROM tblstudents $where";
+                    $countResult = $conn->query($countSql);
+                    $totalRows = 0;
+                    if ($countResult) {
+                        $row = $countResult->fetch_assoc();
+                        $totalRows = (int) $row['total'];
+                    }
+                    $totalPages = ceil($totalRows / $limit);
+                    if ($page > $totalPages && $totalPages > 0) {
+                        $page = $totalPages;  // clamp page if out of range
+                    }
+                    $offset = ($page - 1) * $limit;
 
-          // Fetch paginated results with WHERE filter and search
-          $sql = "SELECT * FROM tblstudents $where ORDER BY Id LIMIT $limit OFFSET $offset";
-          $result = $conn->query($sql);
+                    // Fetch paginated results with WHERE filter and search
+                    $sql = "SELECT * FROM tblstudents $where ORDER BY Id LIMIT $limit OFFSET $offset";
+                    $result = $conn->query($sql);
 
-          // Fetch distinct classArms for filter dropdown (optional: replace with your actual classArm source table)
-          $classArmOptions = [];
-          $classArmSql = "SELECT DISTINCT classArm FROM tblstudents ORDER BY classArm ASC";
-          $classArmResult = $conn->query($classArmSql);
-          if ($classArmResult) {
-            while ($row = $classArmResult->fetch_assoc()) {
-              $classArmOptions[] = $row['classArm'];
-            }
-          }
-          ?>
+                    // Fetch distinct classArms for filter dropdown (optional: replace with your actual classArm source table)
+                    $classArmOptions = [];
+                    $classArmSql = "SELECT DISTINCT classArm FROM tblstudents ORDER BY classArm ASC";
+                    $classArmResult = $conn->query($classArmSql);
+                    if ($classArmResult) {
+                        while ($row = $classArmResult->fetch_assoc()) {
+                            $classArmOptions[] = $row['classArm'];
+                        }
+                    }
+                    ?>
+                    <br>
 
                     <!-- Search & Filter Form -->
                     <form method="get" action="" class="mb-3 form-inline">
@@ -369,7 +399,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
                                 <option value="">-- Filter by Class Arm --</option>
                                 <?php foreach ($classArmOptions as $option): ?>
                                 <option value="<?php echo htmlspecialchars($option); ?>" <?php if ($option === $classArmFilter)
-                       echo "selected"; ?>>
+                                           echo "selected"; ?>>
                                     <?php echo htmlspecialchars($option); ?>
                                 </option>
                                 <?php endforeach; ?>
@@ -394,7 +424,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
                                                 <th>Other Name</th>
-                                                <th>Admission No</th>
+                                                <th>Index No</th>
                                                 <th>Password</th>
                                                 <th>Department</th>
                                                 <th>Program</th>
@@ -407,11 +437,11 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
                                         </thead>
                                         <tbody>
                                             <?php
-                      if ($result && $result->num_rows > 0) {
-                        $sn = $offset;
-                        while ($row = $result->fetch_assoc()) {
-                          $sn++;
-                          echo "<tr>
+                                            if ($result && $result->num_rows > 0) {
+                                                $sn = $offset;
+                                                while ($row = $result->fetch_assoc()) {
+                                                    $sn++;
+                                                    echo "<tr>
                       <td>{$sn}</td>
                       <td>" . htmlspecialchars($row['firstName']) . "</td>
                       <td>" . htmlspecialchars($row['lastName']) . "</td>
@@ -426,11 +456,11 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
                       <td><a href='?action=edit&Id={$row['Id']}&page=$page&search=" . urlencode($search) . "&classArm=" . urlencode($classArmFilter) . "'><i class='fas fa-fw fa-edit'></i></a></td>
                       <td><a href='?action=delete&Id={$row['Id']}&page=$page&search=" . urlencode($search) . "&classArm=" . urlencode($classArmFilter) . "' onclick=\"return confirm('Are you sure?');\"><i class='fas fa-fw fa-trash'></i></a></td>
                   </tr>";
-                        }
-                      } else {
-                        echo "<tr><td colspan='13' class='text-center'>No Records Found</td></tr>";
-                      }
-                      ?>
+                                                }
+                                            } else {
+                                                echo "<tr><td colspan='13' class='text-center'>No Records Found</td></tr>";
+                                            }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -439,22 +469,22 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination justify-content-center">
                                         <li class="page-item <?php if ($page <= 1)
-                      echo 'disabled'; ?>">
+                                            echo 'disabled'; ?>">
                                             <a class="page-link"
                                                 href="?page=<?php echo $page - 1; ?>&search=<?php echo urlencode($search); ?>&classArm=<?php echo urlencode($classArmFilter); ?>">Previous</a>
                                         </li>
 
                                         <?php
-                    $startPage = max(1, $page - 2);
-                    $endPage = min($totalPages, $page + 2);
-                    for ($i = $startPage; $i <= $endPage; $i++) {
-                      $active = ($i == $page) ? 'active' : '';
-                      echo "<li class='page-item $active'><a class='page-link' href='?page=$i&search=" . urlencode($search) . "&classArm=" . urlencode($classArmFilter) . "'>$i</a></li>";
-                    }
-                    ?>
+                                        $startPage = max(1, $page - 2);
+                                        $endPage = min($totalPages, $page + 2);
+                                        for ($i = $startPage; $i <= $endPage; $i++) {
+                                            $active = ($i == $page) ? 'active' : '';
+                                            echo "<li class='page-item $active'><a class='page-link' href='?page=$i&search=" . urlencode($search) . "&classArm=" . urlencode($classArmFilter) . "'>$i</a></li>";
+                                        }
+                                        ?>
 
                                         <li class="page-item <?php if ($page >= $totalPages)
-                      echo 'disabled'; ?>">
+                                            echo 'disabled'; ?>">
                                             <a class="page-link"
                                                 href="?page=<?php echo $page + 1; ?>&search=<?php echo urlencode($search); ?>&classArm=<?php echo urlencode($classArmFilter); ?>">Next</a>
                                         </li>
@@ -494,25 +524,17 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/ruang-admin.min.js"></script>
     <!-- Page level plugins -->
     <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <script src="js/your-custom-script.js"></script>
-
     <!-- Page level custom scripts -->
     <script>
     $(document).ready(function() {
-        $('#dataTable').DataTable(); // ID From dataTable 
         $('#dataTableHover').DataTable(); // ID From dataTable with Hover
     });
     </script>

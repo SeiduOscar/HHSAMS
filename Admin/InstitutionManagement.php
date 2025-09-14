@@ -160,7 +160,7 @@ $rrw = $rs->fetch_assoc();
                             <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                         </ol>
                     </div>
-                    <div class="row mb-3" style="width: 50%">
+                    <div class="row mb-3" style="width: 100%">
                         <!-- Department Management Card -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card shadow h-100 border-left-warning">

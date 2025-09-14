@@ -48,9 +48,14 @@ if (isset($_POST['save'])) {
   $admissionNumber = $_POST['admissionNumber'];
   $password = md5($_POST['password']);
   $programId = $_POST['program']; // Program ID (name or ID)
-  $email = $_POST['email'];
+  $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
   $classArmId = $_POST['classArm'];
   $dateCreated = date("Y-m-d");
+
+  $emailValid = preg_match('/^[a-zA-Z0-9._%+-]+@(hcuc\.edu\.gh|hcu\.edu\.gh)$/i', $email);
+  if (!$emailValid) {
+    $statusMsg = "<div class='alert alert-danger'>Invalid email domain. Email must end with @hcuc.edu.gh or @hcu.edu.gh.</div>";
+  }
 
   // Get program code name
   $query = mysqli_query($conn, "SELECT ProgramDepartmentCodeName FROM tblprograms WHERE ProgramName ='$programId'");
@@ -115,8 +120,8 @@ if (isset($_POST['save'])) {
     $statusMsg = "<div class='alert alert-danger'>Please capture an image.</div>";
   }
 
-  // Proceed to insert only if face encoding was obtained
-  if ($faceEncodingJson !== null) {
+  // Proceed to insert only if face encoding was obtained and email is valid
+  if ($faceEncodingJson !== null && $emailValid) {
     // Check duplicate admission number
     $queryCheck = mysqli_query($conn, "SELECT * FROM tblstudents WHERE admissionNumber ='$admissionNumber'");
     if (mysqli_num_rows($queryCheck) > 0) {
@@ -305,7 +310,8 @@ if (isset($_GET['status'])) {
                         <label for="email" class="col-sm-3 col-form-label">Email <span
                                 class="text-danger">*</span></label>
                         <div class="col-sm-9">
-                            <input type="email" class="form-control" name="email" id="email" required />
+                            <input type="email" class="form-control" name="email" id="email"
+                                pattern="^[a-zA-Z0-9._%+-]+@(hcuc\.edu\.gh|hcu\.edu\.gh)$" required />
                         </div>
                     </div>
 
