@@ -400,10 +400,14 @@ $absent = array_reverse($absent);
 
                                 </form>
                                 <div class="attendance-btn">
-                                    <button type="submit" name="view" class="btn btn-primary">Export Attendance</button>
-                                    <button type="submit" name="view" class="btn btn-primary">View Classes</button>
-                                    <button type="submit" name="view" class="btn btn-primary">Manually Mark
-                                        Attendance</button>
+                                    <a href="downloadRecord.php"><button type="submit" name="view"
+                                            class="btn btn-primary">Export Attendance</button></a>
+                                    <a href="viewStudents.php"><button type="submit" name="view"
+                                            class="btn btn-primary">View
+                                            Students</button></a>
+                                    <a href="takeAttendance.php"><button type="submit" name="view"
+                                            class="btn btn-primary">Manually Mark
+                                            Attendance</button></a>
                                 </div>
                             </div>
                         </div>

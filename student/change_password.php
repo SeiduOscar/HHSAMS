@@ -4,13 +4,13 @@ session_start();
 include '../Includes/dbcon.php';
 
 // Check if student is logged in
-if (!isset($_SESSION['studentId'])) {
+if (!isset($_SESSION['admissionNumber'])) {
     header('HTTP/1.1 401 Unauthorized');
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit();
 }
 
-$studentId = $_SESSION['studentId'];
+$admissionNumber = $_SESSION['admissionNumber'];
 $currentPassword = $_POST['currentPassword'] ?? '';
 $newPassword = $_POST['newPassword'] ?? '';
 $confirmNewPassword = $_POST['confirmNewPassword'] ?? '';
@@ -27,8 +27,8 @@ if ($newPassword !== $confirmNewPassword) {
 }
 
 // Check current password
-$query = $conn->prepare("SELECT password FROM tblstudents WHERE Id = ?");
-$query->bind_param("i", $studentId);
+$query = $conn->prepare("SELECT password FROM tblstudents WHERE admissionNumber = ?");
+$query->bind_param("s", $admissionNumber);
 $query->execute();
 $result = $query->get_result();
 $student = $result->fetch_assoc();
@@ -46,8 +46,8 @@ if ($student['password'] !== $currentPasswordHash) {
 
 // Update password
 $newPasswordHash = md5($newPassword);
-$updateQuery = $conn->prepare("UPDATE tblstudents SET password = ? WHERE Id = ?");
-$updateQuery->bind_param("si", $newPasswordHash, $studentId);
+$updateQuery = $conn->prepare("UPDATE tblstudents SET password = ? WHERE admissionNumber = ?");
+$updateQuery->bind_param("ss", $newPasswordHash, $admissionNumber);
 
 if ($updateQuery->execute()) {
     echo json_encode(['success' => true, 'message' => 'Password changed successfully']);

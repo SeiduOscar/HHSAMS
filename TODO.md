@@ -1,7 +1,5 @@
-- [ ] Fix non-unique IDs in Admin/createClassTeacher.php: Change all id="exampleInputFirstName" to unique IDs (firstName, lastName, password, emailAddress, phoneNo)
-- [ ] Remove duplicate jQuery CDN script in Admin/createClassTeacher.php
-- [ ] Remove js/your-custom-script.js include in Admin/createClassTeacher.php
-- [ ] Remove duplicate jQuery CDN script in Admin/createStudents.php
-- [ ] Remove js/your-custom-script.js include in Admin/createStudents.php
-- [ ] Fix DataTable selector in Admin/createStudents.php: Remove or correct $('#dataTable').DataTable() since no such table exists
-- [ ] Test the pages for console errors
+# TODO List for Fixing Attendance.php
+
+- [x] Remove "d-none" class from the attendance section in student/attendance.php to make content visible on page load.
+- [ ] Comment out JavaScript code that toggles sections based on nav link clicks, as this page is standalone.
+- [x] Fix session variable mismatch in fetch_attendance.php and fetch_recent_attendance.php to use admissionNumber instead of studentId.
