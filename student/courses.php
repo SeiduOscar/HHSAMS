@@ -20,8 +20,10 @@ include '../Includes/dbcon.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link href="img/logo/attnlg.jpg" rel="icon">
     <title>Student Courses</title>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../Admin/css/sidebar-fix.css">
@@ -148,6 +150,7 @@ include '../Includes/dbcon.php';
 </head>
 
 <body>
+
     <!-- <button id="sidebarToggleTop" type="button" class="btn btn-link d-md-none rounded-circle mr-3"
         style="position:fixed;top:10px;left:10px;z-index:1100;background:#343a40;color:#fff;">
         <i class="fa fa-bars"></i>
@@ -156,18 +159,23 @@ include '../Includes/dbcon.php';
         style="position:fixed;top:15px;right:10px;left:auto;z-index:1100;background:#343a40;color:#fff;">
         <i class="fa fa-bars"></i>
     </button>
+
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar" class="sidebar bg-dark text-white">
             <?php include 'includes/sidebar.php'; ?>
+
         </nav>
         <!-- Sidebar Overlay -->
         <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
         <!-- Main Content -->
         <div id="content-wrapper" class="content">
             <!-- Top Navigation -->
             <?php include './includes/topbar.php' ?>
+
             <main class="container-fluid p-3 p-md-4">
+
                 <!-- My Courses Section -->
                 <section id="courses-section" class="">
                     <div class="card mb-4">
@@ -234,6 +242,7 @@ include '../Includes/dbcon.php';
                                             $lecturer = $lecturerfetch['firstName'] . " " . $lecturerfetch['lastName'];
                                         }
                                         ?>
+
                                 <div class="col-12 col-md-6 col-lg-4 mb-4">
                                     <div class="card course-card h-100">
                                         <div class="card-body">
@@ -259,6 +268,7 @@ include '../Includes/dbcon.php';
                                     </div>
                                 </div>
                                 <?php
+
                                     } // end while
                                 } else {
                                     echo "<div class='col-12'><p class='text-muted'>No courses available.</p></div>";
@@ -271,6 +281,9 @@ include '../Includes/dbcon.php';
             </main>
 
         </div>
+
+    </div>
+</body>
 
 
 

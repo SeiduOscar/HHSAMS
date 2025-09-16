@@ -26,6 +26,7 @@ include '../Includes/dbcon.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../Admin/css/sidebar-fix.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -131,11 +132,22 @@ include '../Includes/dbcon.php';
             width: 250px;
             /* Ensure width is restored on mobile */
             overflow: visible;
+
         }
 
         .content {
+            margin-left: 250px;
+            transition: all 0.3s;
+        }
+
+        .sidebar.collapsed {
+            margin-left: -250px;
+        }
+
+        .content.expanded {
             margin-left: 0;
         }
+
 
         .sidebar-overlay {
             position: fixed;
@@ -186,13 +198,17 @@ include '../Includes/dbcon.php';
         <nav id="sidebar" class="sidebar bg-dark text-white">
             <?php include './includes/sidebar.php' ?>
         </nav>
+
         <!-- Sidebar Overlay -->
         <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
         <!-- Main Content -->
         <div id="content-wrapper" class="content">
             <!-- Top Navigation -->
             <?php include './includes/topbar.php' ?>
+
             <main class="container-fluid p-3 p-md-4">
+
                 <!-- Dashboard Section -->
                 <section id="dashboard-section">
                     <div class="card mb-4">
@@ -361,6 +377,7 @@ include '../Includes/dbcon.php';
                                                 $recentPresent = $resultPresent->fetch_all(MYSQLI_ASSOC);
 
                                                 foreach ($recentPresent as $present): ?>
+
                                                 <div
                                                     class="list-group-item d-flex justify-content-between align-items-center">
                                                     <div class="d-flex align-items-center">
@@ -370,6 +387,7 @@ include '../Includes/dbcon.php';
                                                         <div>
                                                             <p class="font-weight-bold mb-0">
                                                                 <?php
+
                                                                     $courNameQuery = mysqli_query($conn, "SELECT courseName FROM tblcourses WHERE courseCode = '" . $present['courseCode'] . "'");
                                                                     $PresentcourNameRow = mysqli_fetch_assoc($courNameQuery);
 
@@ -386,13 +404,16 @@ include '../Includes/dbcon.php';
                                                 <?php if (empty($recentPresent)): ?>
                                                 <div class="list-group-item text-muted">No recent present attendance
                                                     records found.</div>
+
                                                 <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-12 col-lg-6 mb-4">
                                     <div class="card h-100">
+
                                         <div class="card-body">
                                             <h3 class="h5 font-weight-bold text-gray-800 mb-3">Recent Absent Attendance
                                             </h3>
@@ -412,6 +433,7 @@ include '../Includes/dbcon.php';
                                                 $recentAbsent = $resultAbsent->fetch_all(MYSQLI_ASSOC);
 
                                                 foreach ($recentAbsent as $absent): ?>
+
                                                 <div
                                                     class="list-group-item d-flex justify-content-between align-items-center">
                                                     <div class="d-flex align-items-center">
@@ -421,10 +443,12 @@ include '../Includes/dbcon.php';
                                                         <div>
                                                             <p class="font-weight-bold mb-0">
                                                                 <?php
+
                                                                     $courNameQuery = mysqli_query($conn, "SELECT courseName FROM tblcourses WHERE courseCode = '" . $absent['courseCode'] . "'");
                                                                     $courNameRow = mysqli_fetch_assoc($courNameQuery);
 
                                                                     echo htmlspecialchars($courNameRow['courseName']); ?>
+
                                                             </p>
                                                             <small
                                                                 class="text-muted"><?php echo htmlspecialchars($absent['dateTimeTaken']); ?></small>
@@ -436,6 +460,7 @@ include '../Includes/dbcon.php';
                                                 <?php if (empty($recentAbsent)): ?>
                                                 <div class="list-group-item text-muted">No recent absent attendance
                                                     records found.</div>
+
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -453,9 +478,13 @@ include '../Includes/dbcon.php';
 
 
 
+
+
             </main>
         </div>
     </div>
+
+</body>
 
 
 

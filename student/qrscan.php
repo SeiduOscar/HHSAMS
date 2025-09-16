@@ -19,8 +19,10 @@ include '../Includes/dbcon.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link href="img/logo/attnlg.jpg" rel="icon">
     <title>QrCode Scan</title>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../Admin/css/sidebar-fix.css">
@@ -93,10 +95,12 @@ include '../Includes/dbcon.php';
 
 <body>
 
+
     <button id="sidebarToggleTop" type="button" class="btn btn-link d-md-none rounded-circle mr-3"
         style="position:fixed;top:0px;right:10px;left:auto;z-index:1100;background:#343a40;color:#fff;">
         <i class="fa fa-bars"></i>
     </button>
+
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar" class="sidebar bg-dark text-white">
@@ -104,14 +108,18 @@ include '../Includes/dbcon.php';
         </nav>
 
         <!-- Sidebar Overlay -->
+
         <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
 
         <!-- Main Content -->
         <div id="content-wrapper" class="content">
             <!-- Top Navigation -->
             <?php include './includes/topbar.php' ?>
 
+
             <main class="container-fluid p-3 p-md-4">
+
                 <!-- QR Scanner Section -->
                 <section id="qr-scanner-section" style="display:block;">
                     <div class="card mb-4">
@@ -145,7 +153,9 @@ include '../Includes/dbcon.php';
                                     <button id="start-scan-btn" class="btn btn-primary mr-2">
                                         Start Scanning
                                     </button>
+
                                     <button id="stop-scan-btn" class="btn btn-danger mr-2 d-none">
+
                                         Stop Scanning
                                     </button>
                                 </div>
@@ -153,21 +163,21 @@ include '../Includes/dbcon.php';
                         </div>
                     </div>
                 </section>
-                <script>
-                let html5QrcodeScanner = null;
-                let scanning = false;
+                <<<<<<< HEAD <script>
+                    let html5QrcodeScanner = null;
+                    let scanning = false;
 
-                function isValidUrl(string) {
+                    function isValidUrl(string) {
                     try {
-                        new URL(string);
-                        return true;
+                    new URL(string);
+                    return true;
                     } catch (_) {
-                        return false;
+                    return false;
                     }
-                }
+                    }
 
 
-                function showScanResult(decodedText) {
+                    function showScanResult(decodedText) {
                     $('#scan-result').text(decodedText);
                     $('#qr-reader-results').removeClass('d-none');
                     // Do not hide the scanner, allow multiple scans
@@ -177,26 +187,26 @@ include '../Includes/dbcon.php';
                     // scanning = false;
 
                     if (isValidUrl(decodedText)) {
-                        $('#link-container').removeClass('d-none');
-                        $('#scanned-link').attr('href', decodedText).text(decodedText);
-                        $('#scan-result').removeClass('text-danger').addClass('text-muted');
+                    $('#link-container').removeClass('d-none');
+                    $('#scanned-link').attr('href', decodedText).text(decodedText);
+                    $('#scan-result').removeClass('text-danger').addClass('text-muted');
                     } else {
-                        $('#link-container').addClass('d-none');
-                        $('#scanned-link').attr('href', '#').text('');
-                        $('#scan-result').removeClass('text-muted').addClass('text-danger');
-                        $('#scan-result').text(decodedText + ' (Not a valid URL)');
+                    $('#link-container').addClass('d-none');
+                    $('#scanned-link').attr('href', '#').text('');
+                    $('#scan-result').removeClass('text-muted').addClass('text-danger');
+                    $('#scan-result').text(decodedText + ' (Not a valid URL)');
                     }
-                }
+                    }
 
-                function resetScannerUI() {
+                    function resetScannerUI() {
                     $('#qr-reader-results').addClass('d-none');
                     $('#scan-result').text('');
                     $('#link-container').addClass('d-none');
                     $('#scanned-link').attr('href', '#').text('');
                     $('#qr-reader').show();
-                }
+                    }
 
-                function startScanner() {
+                    function startScanner() {
                     if (scanning) return;
                     scanning = true;
                     $('#start-scan-btn').addClass('d-none');
@@ -204,82 +214,84 @@ include '../Includes/dbcon.php';
                     resetScannerUI();
 
                     if (!html5QrcodeScanner) {
-                        html5QrcodeScanner = new Html5Qrcode("qr-reader");
+                    html5QrcodeScanner = new Html5Qrcode("qr-reader");
                     }
                     html5QrcodeScanner.start({
-                            facingMode: "environment"
-                        }, {
-                            fps: 10,
-                            qrbox: 250
-                        },
-                        (decodedText, decodedResult) => {
-                            showScanResult(decodedText);
-                            // Do not stop the scanner, allow multiple scans
-                        },
-                        (errorMessage) => {
-                            // Optionally handle scan errors
-                        }
-                    ).catch(err => {
-                        scanning = false;
-                        alert("Unable to access camera or start scanner: " + err);
-                        $('#start-scan-btn').removeClass('d-none');
-                        $('#stop-scan-btn').addClass('d-none');
-                    });
-                }
-
-                function stopScanner() {
-                    if (html5QrcodeScanner && scanning) {
-                        html5QrcodeScanner.stop().then(() => {
-                            scanning = false;
-                            $('#start-scan-btn').removeClass('d-none');
-                            $('#stop-scan-btn').addClass('d-none');
-                            $('#qr-reader').hide();
-                        });
+                    facingMode: "environment"
+                    }, {
+                    fps: 10,
+                    qrbox: 250
+                    },
+                    (decodedText, decodedResult) => {
+                    showScanResult(decodedText);
+                    // Do not stop the scanner, allow multiple scans
+                    },
+                    (errorMessage) => {
+                    // Optionally handle scan errors
                     }
-                }
+                    ).catch(err => {
+                    scanning = false;
+                    alert("Unable to access camera or start scanner: " + err);
+                    $('#start-scan-btn').removeClass('d-none');
+                    $('#stop-scan-btn').addClass('d-none');
+                    });
+                    }
 
-                $(document).ready(function() {
+                    function stopScanner() {
+                    if (html5QrcodeScanner && scanning) {
+                    html5QrcodeScanner.stop().then(() => {
+                    scanning = false;
+                    $('#start-scan-btn').removeClass('d-none');
+                    $('#stop-scan-btn').addClass('d-none');
+                    $('#qr-reader').hide();
+                    });
+                    }
+                    }
+
+                    $(document).ready(function() {
                     $('#start-scan-btn').on('click', function() {
-                        $('#qr-reader').show();
-                        startScanner();
+                    $('#qr-reader').show();
+                    startScanner();
                     });
 
                     $('#stop-scan-btn').on('click', function() {
-                        stopScanner();
+                    stopScanner();
                     });
 
                     $('#scan-again-btn').on('click', function() {
-                        resetScannerUI();
-                        $('#qr-reader').show();
-                        startScanner();
+                    resetScannerUI();
+                    $('#qr-reader').show();
+                    startScanner();
                     });
 
                     $('#close-scan-btn').on('click', function() {
-                        resetScannerUI();
-                        $('#qr-reader').hide();
-                        $('#start-scan-btn').removeClass('d-none');
-                        $('#stop-scan-btn').addClass('d-none');
-                        if (scanning) stopScanner();
+                    resetScannerUI();
+                    $('#qr-reader').hide();
+                    $('#start-scan-btn').removeClass('d-none');
+                    $('#stop-scan-btn').addClass('d-none');
+                    if (scanning) stopScanner();
                     });
 
                     $('#copy-link-btn').on('click', function() {
-                        const link = $('#scanned-link').attr('href');
-                        navigator.clipboard.writeText(link).then(function() {
-                            alert('Link copied to clipboard!');
-                        });
+                    const link = $('#scanned-link').attr('href');
+                    navigator.clipboard.writeText(link).then(function() {
+                    alert('Link copied to clipboard!');
+                    });
                     });
 
                     $('#visit-link-btn').on('click', function() {
-                        const link = $('#scanned-link').attr('href');
-                        window.open(link, '_blank');
+                    const link = $('#scanned-link').attr('href');
+                    window.open(link, '_blank');
                     });
 
                     // Hide QR reader on load
                     $('#qr-reader').hide();
-                });
-                </script>
-                </script>
+                    });
+                    </script>
+                    </script>
             </main>
         </div>
     </div>
 </body>
+
+</html>

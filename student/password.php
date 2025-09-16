@@ -20,8 +20,10 @@ include '../Includes/dbcon.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link href="img/logo/attnlg.jpg" rel="icon">
     <title>Password update</title>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../Admin/css/sidebar-fix.css">
@@ -152,6 +154,7 @@ include '../Includes/dbcon.php';
         style="position:fixed;top:0px;right:10px;left:auto;z-index:1100;background:#343a40;color:#fff;">
         <i class="fa fa-bars"></i>
     </button>
+
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar" class="sidebar bg-dark text-white">
@@ -159,14 +162,18 @@ include '../Includes/dbcon.php';
         </nav>
 
         <!-- Sidebar Overlay -->
+
         <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
 
         <!-- Main Content -->
         <div id="content-wrapper" class="content">
             <!-- Top Navigation -->
             <?php include './includes/topbar.php' ?>
 
+
             <main class="container-fluid p-3 p-md-4">
+
                 <!-- Change Password Section -->
                 <section id="change-password-section">
                     <div class="card mb-4 mx-auto" style="max-width: 800px;">
@@ -225,6 +232,7 @@ include '../Includes/dbcon.php';
             </main>
 
         </div>
+
 
 
         <script>
@@ -305,5 +313,7 @@ include '../Includes/dbcon.php';
             });
         });
         </script>
+    </div>
+</body>
 
 </html>

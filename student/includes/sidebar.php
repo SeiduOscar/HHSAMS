@@ -1,4 +1,5 @@
 <div class="sidebar-header p-4 border-bottom border-secondary">
+
     <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
             <div class="bg-primary rounded-circle p-2 mr-3">
@@ -30,6 +31,7 @@
         <!-- <button id="sidebarCloseBtn" class="btn btn-link text-white d-md-none">
             <i class="fas fa-times"></i>
         </button> -->
+
     </div>
 </div>
 

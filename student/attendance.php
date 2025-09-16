@@ -89,7 +89,9 @@ if (isset($_GET['action'])) {
         exit();
 
     } elseif ($action === 'fetch_recent') {
+
         // Fetch recent attendance records (for table)
+
         $admissionNumber = $_SESSION['admissionNumber'];
         $fromDate = $_GET['from'] ?? '';
         $toDate = $_GET['to'] ?? '';
@@ -99,24 +101,30 @@ if (isset($_GET['action'])) {
                 FROM tblattendance a
                 LEFT JOIN tblcourses c ON a.courseCode = c.courseCode
                 WHERE a.admissionNo = ?";
+
         $params = [$admissionNumber];
         $types = "s";
+
         if (!empty($course)) {
             $sql .= " AND a.courseCode = ?";
             $params[] = $course;
             $types .= "s";
         }
+
         if (!empty($fromDate) && !empty($toDate)) {
             $sql .= " AND DATE(a.dateTimeTaken) BETWEEN ? AND ?";
             $params[] = $fromDate;
             $params[] = $toDate;
             $types .= "ss";
         }
+
         $sql .= " ORDER BY a.dateTimeTaken DESC LIMIT 20";
+
         $stmt = $conn->prepare($sql);
         $stmt->bind_param($types, ...$params);
         $stmt->execute();
         $result = $stmt->get_result();
+
         $records = [];
         while ($row = $result->fetch_assoc()) {
             $records[] = [
@@ -125,6 +133,7 @@ if (isset($_GET['action'])) {
                 'status' => $row['status'] == '1' ? 'Present' : 'Absent'
             ];
         }
+
         header('Content-Type: application/json');
         echo json_encode($records);
         exit();
@@ -174,6 +183,7 @@ if (isset($_GET['action'])) {
         }
         fclose($output);
         exit();
+
     }
 }
 
@@ -187,12 +197,14 @@ if (isset($_GET['action'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link href="img/logo/attnlg.jpg" rel="icon">
     <title>Student Attendance History</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../Admin/css/sidebar-fix.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -276,22 +288,28 @@ if (isset($_GET['action'])) {
 </head>
 
 <body>
+
     <button id="sidebarToggleTop" type="button" class="btn btn-link d-md-none rounded-circle mr-3"
         style="position:fixed;top:0px;right:10px;left:auto;z-index:1100;background:#343a40;color:#fff;">
         <i class="fa fa-bars"></i>
     </button>
+
     <div class="wrapper">
         <!-- Sidebar -->
         <nav id="sidebar" class="sidebar bg-dark text-white">
             <?php include 'includes/sidebar.php'; ?>
         </nav>
+
         <!-- Sidebar Overlay -->
         <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
         <!-- Main Content -->
         <div id="content-wrapper" class="content">
             <!-- Top Navigation -->
             <?php include './includes/topbar.php' ?>
+
             <main class="container-fluid p-3 p-md-4">
+
                 <!-- Attendance History Section -->
                 <section id="attendance-section">
                     <div class="card mb-4">
@@ -393,9 +411,11 @@ if (isset($_GET['action'])) {
                                             <button type="submit" class="btn btn-primary mr-2">
                                                 Apply Filter
                                             </button>
+
                                             <button type="button" id="exportBtn" class="btn btn-success mr-2">
                                                 Export CSV
                                             </button>
+
                                             <button type="reset" id="resetBtn" class="btn btn-outline-secondary">
                                                 Reset
                                             </button>
@@ -405,7 +425,9 @@ if (isset($_GET['action'])) {
                             </div>
 
                             <div class="row">
+
                                 <div class="col-12 col-lg-6 mb-4">
+
                                     <div class="card">
                                         <div class="card-body">
                                             <h3 class="h5 font-weight-bold text-gray-800 mb-3">Attendance Statistics
@@ -414,15 +436,19 @@ if (isset($_GET['action'])) {
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-12 col-lg-6 mb-4">
+
                                     <div class="card">
                                         <div class="card-body">
                                             <h3 class="h5 font-weight-bold text-gray-800 mb-3">Recent Attendance
                                                 Records
                                             </h3>
                                             <div class="table-responsive">
+
                                                 <table class="table table-striped table-bordered table-hover table-sm">
                                                     <thead class="thead-dark">
+
                                                         <tr>
                                                             <th class="small font-weight-bold">Date</th>
                                                             <th class="small font-weight-bold">Course</th>
@@ -502,6 +528,7 @@ if (isset($_GET['action'])) {
                     data: {
                         labels: [],
                         datasets: [{
+
                                 label: 'Present (%)',
                                 data: [],
                                 backgroundColor: 'rgba(40, 167, 69, 0.8)',
@@ -513,6 +540,7 @@ if (isset($_GET['action'])) {
                                 data: [],
                                 backgroundColor: 'rgba(220, 53, 69, 0.8)',
                                 borderColor: 'rgba(220, 53, 69, 1)',
+
                                 borderWidth: 2,
                                 minBarLength: 2 // Always show a bar for absent
                             }
@@ -536,6 +564,7 @@ if (isset($_GET['action'])) {
                                 ticks: {
                                     callback: function(value) {
                                         return value + '%';
+
                                     }
                                 }
                             }

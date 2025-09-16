@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand navbar-light bg-white shadow-sm sticky-top">
     <div class="container-fluid">
+
+
         <h1 class="h5 mb-0 text-gray-800">Student Dashboard</h1>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
