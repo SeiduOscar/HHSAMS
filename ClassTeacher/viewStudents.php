@@ -22,8 +22,6 @@ include '../Includes/session.php';
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="js/ruang-admin.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="js/ruang-admin.min.js"></script>
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -445,10 +443,6 @@ include '../Includes/session.php';
     <!-- Page level plugins -->
     <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
 
 
     <script>
