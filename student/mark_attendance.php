@@ -4,12 +4,12 @@ include '../Includes/dbcon.php';
 
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['studentId'])) {
+if (!isset($_SESSION['admissionNumber'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit();
 }
 
-$studentId = $_SESSION['studentId'];
+$studentId = $_SESSION['admissionNumber'];
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!isset($data['qrCode'])) {

@@ -264,7 +264,7 @@ if (isset($_GET['status'])) {
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="admissionNumber" class="col-sm-3 col-form-label">Admission Number <span
+                        <label for="admissionNumber" class="col-sm-3 col-form-label">Index Number <span
                                 class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="admissionNumber" id="admissionNumber"
@@ -290,8 +290,8 @@ if (isset($_GET['status'])) {
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="classArm" class="col-sm-3 col-form-label">Class Arm <span
-                                class="text-danger">*</span></label>
+                        <label for="classArm" class="col-sm-3 col-form-label">Class Arm(WD for weekday and WE for
+                            weekend) <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <select name="classArm" id="classArm" class="form-control" required>
                                 <option value="">--Select Class Arm--</option>
@@ -307,7 +307,7 @@ if (isset($_GET['status'])) {
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="email" class="col-sm-3 col-form-label">Email <span
+                        <label for="email" class="col-sm-3 col-form-label">Email(School Email) <span
                                 class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <input type="email" class="form-control" name="email" id="email"

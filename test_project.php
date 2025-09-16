@@ -12,10 +12,10 @@ if (isset($conn) && $conn->connect_error) {
     echo "<p>Please check your database configuration in Includes/dbcon.php</p>\n";
 } else {
     echo "<p style='color:green;'>✅ Database connection successful!</p>\n";
-    
+
     // Test basic queries
     echo "<h2>Testing Basic Queries...</h2>\n";
-    
+
     // Test admin table
     $result = $conn->query("SELECT COUNT(*) as admin_count FROM tbladmin");
     if ($result) {
@@ -24,7 +24,7 @@ if (isset($conn) && $conn->connect_error) {
     } else {
         echo "<p style='color:red;'>❌ Admin table not accessible: " . $conn->error . "</p>\n";
     }
-    
+
     // Test students table
     $result = $conn->query("SELECT COUNT(*) as student_count FROM tblstudents");
     if ($result) {
@@ -33,7 +33,7 @@ if (isset($conn) && $conn->connect_error) {
     } else {
         echo "<p style='color:red;'>❌ Students table not accessible: " . $conn->error . "</p>\n";
     }
-    
+
     // Test class table
     $result = $conn->query("SELECT COUNT(*) as class_count FROM tblclass");
     if ($result) {
@@ -42,17 +42,17 @@ if (isset($conn) && $conn->connect_error) {
     } else {
         echo "<p style='color:red;'>❌ Class table not accessible: " . $conn->error . "</p>\n";
     }
-    
+
     echo "<h2>Project Status Summary</h2>\n";
     echo "<p>✅ Project files are accessible</p>\n";
     echo "<p>✅ Database connection is working</p>\n";
     echo "<p>✅ Core tables are accessible</p>\n";
     echo "<p>✅ Ready to use!</p>\n";
-    
+
     echo "<h2>Next Steps</h2>\n";
     echo "<p>1. Access the project at: <a href='index.php'>http://localhost/Student-Attendance-Management-System-main/</a></p>\n";
-    echo "<p>2. Login with default admin credentials: admin@mail.com / admin</p>\n";
-    echo "<p>3. For lecturers: Use any email from tblmoderator table with password '12345'</p>\n";
+    echo "<p>2. Login with default admin credentials: os@hcu.edu.gh.com / admin</p>\n";
+    echo "<p>3. For lecturers: Use any email from tblmoderator table with password 'pass123'</p>\n";
 }
 
 echo "<h2>System Requirements Check</h2>\n";

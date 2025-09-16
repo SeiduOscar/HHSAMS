@@ -28,162 +28,102 @@ $sql = "SELECT
 $result = mysqli_query($conn, $sql);
 
 // Debugging: Check for SQL errors
-if (!$result) {
-    die("SQL Error: " . mysqli_error($conn));
-}
-
-// Debugging: Check if session variables are set
-if (!isset($_SESSION['userId'])) {
-    die("Session variables 'userId' is not set.");
-}
-
-$labels = [];
-$present = [];
-$absent = [];
-
-while ($row = mysqli_fetch_assoc($result)) {
-    $labels[] = $row['date'];
-    $present[] = $row['presentRate'];
-    $absent[] = $row['absentRate'];
-}
-
-// Reverse arrays to display in chronological order
-$labels = array_reverse($labels);
-$present = array_reverse($present);
-$absent = array_reverse($absent);
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Class Teacher Dashboard</title>
     <link href="img/logo/attnlg.jpg" rel="icon">
-    <title>Dashboard</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="css/ruang-admin.css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/ruang-admin.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <!-- Chart.js -->
+    <script src="../vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery, Popper.js, and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="js/ruang-admin.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Responsive Fixes -->
+    <style>
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        overflow-x: hidden;
+        background: #f8f9fc;
+    }
 
+    .container-fluid,
+    .content-wrapper {
+        width: 100vw !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 100vh;
+        background: #f8f9fc;
+    }
+
+    .sidebar {
+        min-width: 0;
+        width: 100vw !important;
+        left: 0 !important;
+    }
+
+    @media (max-width: 992px) {
+        .sidebar {
+            position: fixed;
+            z-index: 1000;
+            width: 80vw !important;
+            left: -80vw;
+            transition: left 0.3s;
+        }
+
+        .sidebar.active {
+            left: 0 !important;
+        }
+
+        .content-wrapper {
+            margin-left: 0 !important;
+            width: 100vw !important;
+            padding: 0 5vw;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .dashboard-cards {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+
+        .dashboard-card {
+            width: 100% !important;
+            margin-bottom: 15px !important;
+        }
+
+        .content-wrapper,
+        .container-fluid {
+            padding: 0 2vw !important;
+        }
+    }
+    </style>
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="css/ruang-admin.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .large-card {
-        margin-top: 1%;
-        width: 100%;
-        height: auto;
-        padding: 20px;
-        background: white;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-    }
-
-    .attendance-btn {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .attendance-btn button {
-        padding: 10px 20px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .attendance-btn button:hover {
-        background-color: #0056b3;
-    }
-
-    .graph {
-        margin-top: 30px;
-        text-align: center;
-    }
-
-    canvas {
-        max-width: 100%;
-    }
-
-    #chartContainer,
-    #listContainer {
-        width: 100%;
-        height: 350px;
-        overflow-y: auto;
-    }
-
-    #listContainer {
-        display: none;
-    }
-
-    .controls {
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .controls label {
-        font-size: 14px;
-    }
-
-    .controls button {
-        padding: 5px 10px;
-        border: 1px solid #ccc;
-        background: white;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
-    .controls button.active {
-        background: #007bff;
-        color: white;
-    }
-
-
-    #sidebar {
-        position: fixed;
-        /* keeps it in place */
-        top: 0;
-        left: 0;
-        height: 100vh;
-        /* full height */
-        width: 250px;
-        /* adjust as needed */
-
-        color: white;
-        overflow-y: auto;
-        z-index: 1000;
-    }
-
-    #content-wrapper {
-        margin-left: 220px;
-        /* same as #sidebar width */
-
-        /* optional for spacing */
-    }
-    </style>
 </head>
 
 <body id="page-top">
@@ -400,10 +340,14 @@ $absent = array_reverse($absent);
 
                                 </form>
                                 <div class="attendance-btn">
-                                    <button type="submit" name="view" class="btn btn-primary">Export Attendance</button>
-                                    <button type="submit" name="view" class="btn btn-primary">View Classes</button>
-                                    <button type="submit" name="view" class="btn btn-primary">Manually Mark
-                                        Attendance</button>
+                                    <a href="downloadRecord.php"><button type="submit" name="view"
+                                            class="btn btn-primary">Export Attendance</button></a>
+                                    <a href="viewStudents.php"><button type="submit" name="view"
+                                            class="btn btn-primary">View
+                                            Students</button></a>
+                                    <a href="takeAttendance.php"><button type="submit" name="view"
+                                            class="btn btn-primary">Manually Mark
+                                            Attendance</button></a>
                                 </div>
                             </div>
                         </div>
@@ -822,28 +766,16 @@ $absent = array_reverse($absent);
                 <?php
                 // endif; 
                 ?>
-            </tbody>
-        </table>
-    </div>
-</div> -->
+<!--Row-->
 
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
 
-
-        </div>
-    </div>
-    <!--Row-->
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
-
-
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/ruang-admin.min.js"></script>
-
-    <script src="js/demo/chart-area-demo.js"></script>
-</body>
+            <script src="../vendor/jquery/jquery.min.js"></script>
+            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+            <script src="js/ruang-admin.min.js"></script>
+            <script src="js/demo/chart-area-demo.js"></script>
 
 </html>

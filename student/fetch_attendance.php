@@ -3,39 +3,32 @@ session_start();
 include '../Includes/dbcon.php';
 
 // Check if student is logged in
-if (!isset($_SESSION['studentId'])) {
+if (!isset($_SESSION['admissionNumber'])) {
     header('HTTP/1.1 401 Unauthorized');
     echo json_encode(['error' => 'Unauthorized']);
     exit();
 }
 
-$studentId = $_SESSION['studentId'];
+$admissionNumber = $_SESSION['admissionNumber'];
 $fromDate = $_GET['from'] ?? '';
 $toDate = $_GET['to'] ?? '';
+$course = $_GET['course'] ?? '';
 
-// Fetch student admission number
-$query = $conn->prepare("SELECT admissionNumber FROM tblstudents WHERE Id = ?");
-$query->bind_param("i", $studentId);
-$query->execute();
-$result = $query->get_result();
-$student = $result->fetch_assoc();
-
-if (!$student) {
-    echo json_encode(['error' => 'Student not found']);
-    exit();
-}
-
-$admissionNumber = $student['admissionNumber'];
-
-// Build query with date filters
-$sql = "SELECT DATE(dateTimeTaken) as date, 
+// Build query with date and course filters
+$sql = "SELECT DATE(dateTimeTaken) as date,
                SUM(status = '1') as present,
                SUM(status = '0') as absent
-        FROM tblattendance 
+        FROM tblattendance
         WHERE admissionNo = ?";
 
 $params = [$admissionNumber];
 $types = "s";
+
+if (!empty($course)) {
+    $sql .= " AND courseCode = ?";
+    $params[] = $course;
+    $types .= "s";
+}
 
 if (!empty($fromDate) && !empty($toDate)) {
     $sql .= " AND DATE(dateTimeTaken) BETWEEN ? AND ?";
@@ -63,8 +56,14 @@ $absentData = [];
 
 while ($row = $result->fetch_assoc()) {
     $labels[] = $row['date'];
-    $presentData[] = (int) $row['present'];
-    $absentData[] = (int) $row['absent'];
+    $total = (int) $row['present'] + (int) $row['absent'];
+    if ($total > 0) {
+        $presentData[] = round(((int) $row['present'] / $total) * 100, 2);
+        $absentData[] = round(((int) $row['absent'] / $total) * 100, 2);
+    } else {
+        $presentData[] = 0;
+        $absentData[] = 0;
+    }
 }
 
 // If no data found, return empty arrays

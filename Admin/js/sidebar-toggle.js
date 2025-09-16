@@ -91,8 +91,8 @@
 
         // Close sidebar when clicking on overlay
         $('#sidebar-overlay').on('click', function() {
-            $('body').addClass('sidebar-toggled');
-            $('.sidebar').addClass('toggled');
+            $('body').removeClass('sidebar-toggled');
+            $('.sidebar').removeClass('toggled');
             $(this).removeClass('active');
         });
     }
