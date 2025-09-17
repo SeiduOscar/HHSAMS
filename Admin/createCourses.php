@@ -293,26 +293,27 @@ $lecturerQuery = $conn->query("SELECT Id, CONCAT(firstName, ' ', lastName) AS na
                                         <div class="form-group">
                                             <label>Program</label>
                                             <select name="program[]" class="form-control select2" multiple="multiple">
-                                                <option value="">--Select Program--</option>
                                                 <?php
-                  if ($programQuery && $programQuery->num_rows > 0) {
-                      $selectedPrograms = [];
-                      if (isset($course['program'])) {
-                      $selectedPrograms = explode('/', $course['program']);
-                      }
-                      // Reset pointer for edit mode
-                      $programQuery->data_seek(0);
-                      while ($prog = $programQuery->fetch_assoc()) {
-                      $selected = '';
-                      if (in_array($prog['ProgramCodeName'], $selectedPrograms)) {
-                          $selected = 'selected';
-                      }
-                      echo '<option value="' . htmlspecialchars($prog['ProgramCodeName']) . '" ' . $selected . '>' . htmlspecialchars($prog['ProgramCodeName']) . '</option>';
-                      }
-                  }
-                  ?>
+        if ($programQuery && $programQuery->num_rows > 0) {
+            $selectedPrograms = [];
+
+            // Handle case when editing: programs are stored as "IT/IS"
+            if (isset($course['program'])) {
+                $selectedPrograms = array_map('trim', explode('/', $course['program']));
+            }
+
+            $programQuery->data_seek(0);
+
+            while ($prog = $programQuery->fetch_assoc()) {
+                $progName = htmlspecialchars($prog['ProgramCodeName']);
+                $selected = in_array($prog['ProgramCodeName'], $selectedPrograms) ? 'selected' : '';
+                echo "<option value=\"$progName\" $selected>$progName</option>";
+            }
+        }
+        ?>
                                             </select>
                                         </div>
+
                                         <div class="form-group">
                                             <label>Select Generality</label>
                                             <select name="generality" class="form-control" required>
@@ -449,11 +450,41 @@ $lecturerQuery = $conn->query("SELECT Id, CONCAT(firstName, ' ', lastName) AS na
             </div>
 
             <!-- Bootstrap core JavaScript-->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+            <script src="../vendor/jquery/jquery.min.js"></script>
+            <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+            <script src="js/ruang-admin.min.js"></script>
+            <!-- Page level plugins -->
+            <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
             <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
             <!-- <script src="js/your-custom-script.js"></script> -->
+            <!-- Select2 CSS -->
+            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+            <!-- Select2 Bootstrap 4 Theme (optional) -->
+            <link
+                href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.6.2/dist/select2-bootstrap4.min.css"
+                rel="stylesheet" />
+
+            <!-- Select2 JS -->
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+            <script>
+            $(document).ready(function() {
+                $('select[name="program[]"]').select2({
+                    placeholder: "Select Programs",
+                    theme: "bootstrap4",
+                    width: '100%'
+                });
+            });
+            </script>
 
             <script>
             $(document).ready(function() {
