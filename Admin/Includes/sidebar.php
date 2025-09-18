@@ -119,8 +119,8 @@
         Institution Management
     </div>
     <li class="nav-item">
-        <a class="nav-link collapsed" href="InstitutionManagement.php" 
-            aria-expanded="true" aria-controls="collapseInstitution">
+        <a class="nav-link collapsed" href="InstitutionManagement.php" aria-expanded="true"
+            aria-controls="collapseInstitution">
             <i class="fa fa-university"></i>
             <span>Manage Institution</span>
         </a>

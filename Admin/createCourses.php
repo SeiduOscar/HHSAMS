@@ -182,14 +182,14 @@ $lecturerQuery = $conn->query("SELECT Id, CONCAT(firstName, ' ', lastName) AS na
     .select2-container {
         width: 100% !important;
     } -->
-    </style>
+    <!-- </style> -->
 
 
 
 
 </head>
 <style>
-#sidebar {
+#accordionSidebar {
     position: fixed;
     top: 0;
     left: 0;
@@ -210,8 +210,8 @@ $lecturerQuery = $conn->query("SELECT Id, CONCAT(firstName, ' ', lastName) AS na
 }
 
 @media (max-width: 768px) {
-    #sidebar {
-        position: fixed;
+    #accordionSidebar {
+        position: static;
         width: fit-content;
         height: auto;
         display: block !important;
@@ -227,7 +227,7 @@ $lecturerQuery = $conn->query("SELECT Id, CONCAT(firstName, ' ', lastName) AS na
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
-        <div id="sidebar">
+        <div id="accordionSidebar">
             <?php include "Includes/sidebar.php";?>
             <!-- Sidebar -->
         </div>
@@ -475,6 +475,33 @@ $lecturerQuery = $conn->query("SELECT Id, CONCAT(firstName, ' ', lastName) AS na
 
             <!-- Select2 JS -->
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+            <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const sidebar = document.getElementById("accordionSidebar"); // ✅ must match your sidebar ID
+                const toggleBtn = document.getElementById("sidebarToggleTop"); // ✅ must match your button ID
+
+                if (toggleBtn && sidebar) {
+                    // Toggle sidebar open/close
+                    toggleBtn.addEventListener("click", (e) => {
+                        e.stopPropagation(); // stop click from bubbling
+                        sidebar.classList.toggle("toggled");
+                    });
+
+                    // Close sidebar when clicking outside
+                    document.addEventListener("click", (event) => {
+                        const isClickInside = sidebar.contains(event.target) || toggleBtn.contains(event
+                            .target);
+                        if (!isClickInside && sidebar.classList.contains("toggled")) {
+                            sidebar.classList.remove("toggled");
+                        }
+                    });
+                } else {
+                    console.warn("Sidebar or toggle button not found in DOM.");
+                }
+            });
+            </script>>
+
 
             <script>
             $(document).ready(function() {

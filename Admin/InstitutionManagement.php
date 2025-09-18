@@ -1,4 +1,4 @@
-<?php 
+<?php
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
 
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editDepartment'])) {
     $departmentFaculty = mysqli_real_escape_string($conn, $_POST['departmentFaculty']);
     $departmentHead = mysqli_real_escape_string($conn, $_POST['departmentHead']);
     $codeName = mysqli_real_escape_string($conn, $_POST['codeName']);
-    
+
     $updateQuery = "UPDATE tbldepartments SET departmentName='$departmentName', departmentFaculty='$departmentFaculty', departmentHead='$departmentHead', codeName='$codeName' WHERE Id=$departmentId";
     if (mysqli_query($conn, $updateQuery)) {
         echo "<script>alert('Department updated successfully.')</script>";
@@ -132,16 +132,19 @@ $rrw = $rs->fetch_assoc();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="img/logo/attnlg.jpg" rel="icon">
     <title>Dashboard</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"
+        type="text/css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/ruang-admin.min.css" rel="stylesheet">
 </head>
+
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
@@ -168,9 +171,12 @@ $rrw = $rs->fetch_assoc();
                                     <div class="mb-2 text-center">
                                         <i class="fas fa-building fa-2x text-warning"></i>
                                     </div>
-                                    <div class="text-xs font-weight-bold text-uppercase mb-1">Department Management</div>
-                                    <button class="btn btn-success btn-sm mt-2 mb-1" data-toggle="modal" data-target="#createDepartmentModal">Create Department</button>
-                                    <button class="btn btn-info btn-sm mb-1" data-toggle="modal" data-target="#editDepartmentModal">Edit Department</button>
+                                    <div class="text-xs font-weight-bold text-uppercase mb-1">Department Management
+                                    </div>
+                                    <button class="btn btn-success btn-sm mt-2 mb-1" data-toggle="modal"
+                                        data-target="#createDepartmentModal">Create Department</button>
+                                    <button class="btn btn-info btn-sm mb-1" data-toggle="modal"
+                                        data-target="#editDepartmentModal">Edit Department</button>
                                 </div>
                             </div>
                         </div>
@@ -182,8 +188,10 @@ $rrw = $rs->fetch_assoc();
                                         <i class="fas fa-user-graduate fa-2x text-danger"></i>
                                     </div>
                                     <div class="text-xs font-weight-bold text-uppercase mb-1">Faculty Management</div>
-                                    <button class="btn btn-success btn-sm mt-2 mb-1" data-toggle="modal" data-target="#createFacultyModal">Create Faculty</button>
-                                    <button class="btn btn-info btn-sm mb-1" data-toggle="modal" data-target="#editFacultyModal">Edit Faculty</button>
+                                    <button class="btn btn-success btn-sm mt-2 mb-1" data-toggle="modal"
+                                        data-target="#createFacultyModal">Create Faculty</button>
+                                    <button class="btn btn-info btn-sm mb-1" data-toggle="modal"
+                                        data-target="#editFacultyModal">Edit Faculty</button>
                                 </div>
                             </div>
                         </div>
@@ -195,8 +203,10 @@ $rrw = $rs->fetch_assoc();
                                         <i class="fas fa-university fa-2x text-secondary"></i>
                                     </div>
                                     <div class="text-xs font-weight-bold text-uppercase mb-1">College Management</div>
-                                    <button class="btn btn-success btn-sm mt-2 mb-1" data-toggle="modal" data-target="#createCollegeModal">Create College</button>
-                                    <button class="btn btn-info btn-sm mb-1" data-toggle="modal" data-target="#editCollegeModal">Edit College</button>
+                                    <button class="btn btn-success btn-sm mt-2 mb-1" data-toggle="modal"
+                                        data-target="#createCollegeModal">Create College</button>
+                                    <button class="btn btn-info btn-sm mb-1" data-toggle="modal"
+                                        data-target="#editCollegeModal">Edit College</button>
                                 </div>
                             </div>
                         </div>
@@ -211,7 +221,8 @@ $rrw = $rs->fetch_assoc();
 
     <!-- Modals for Institution Management -->
     <!-- Create Department Modal -->
-    <div class="modal fade" id="createDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="createDepartmentModal" aria-hidden="true">
+    <div class="modal fade" id="createDepartmentModal" tabindex="-1" role="dialog"
+        aria-labelledby="createDepartmentModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form action="" method="post">
                 <input type="hidden" name="createDepartment" value="1">
@@ -231,7 +242,7 @@ $rrw = $rs->fetch_assoc();
                             <label for="departmentFaculty">Select Faculty</label>
                             <select class="form-control" name="departmentFaculty">
                                 <option value="">--Select faculty --</option>
-                                <?php 
+                                <?php
                                 $facQuery = mysqli_query($conn, "SELECT * FROM tblfaculty");
                                 while ($facRow = mysqli_fetch_assoc($facQuery)) {
                                     echo "<option value='" . $facRow['facultyName'] . "'>" . $facRow['facultyName'] . "</option>";
@@ -259,7 +270,8 @@ $rrw = $rs->fetch_assoc();
     </div>
 
     <!-- Edit Department Modal -->
-    <div class="modal fade" id="editDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="editDepartmentModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editDepartmentModal" tabindex="-1" role="dialog"
+        aria-labelledby="editDepartmentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -326,7 +338,7 @@ $rrw = $rs->fetch_assoc();
                             <option value="` + departmentFaculty + `">` + departmentFaculty + `</option>
                             <?php
                             $facQuery = mysqli_query($conn, "SELECT * FROM tblfaculty");
-                            while($facRow = mysqli_fetch_assoc($facQuery)){
+                            while ($facRow = mysqli_fetch_assoc($facQuery)) {
                                 echo "<option value = '" . $facRow['facultyName'] . "'>" . $facRow['facultyName'] . "</option>";
                             }
                             ?>
@@ -351,14 +363,16 @@ $rrw = $rs->fetch_assoc();
     </script>
 
     <!-- Create Faculty Modal -->
-    <div class="modal fade" id="createFacultyModal" tabindex="-1" role="dialog" aria-labelledby="createFacultyModal" aria-hidden="true">
+    <div class="modal fade" id="createFacultyModal" tabindex="-1" role="dialog" aria-labelledby="createFacultyModal"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form action="" method="post">
                 <input type="hidden" name="createFaculty" value="1">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addFacultyModalLabel">Create Faculty/School</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -385,7 +399,8 @@ $rrw = $rs->fetch_assoc();
     </div>
 
     <!-- Edit Faculty/School Modal -->
-    <div class="modal fade" id="editFacultyModal" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editFacultyModal" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -457,7 +472,8 @@ $rrw = $rs->fetch_assoc();
     </script>
 
     <!-- Create College Modal -->
-    <div class="modal fade" id="createCollegeModal" tabindex="-1" role="dialog" aria-labelledby="createCollegeModal" aria-hidden="true">
+    <div class="modal fade" id="createCollegeModal" tabindex="-1" role="dialog" aria-labelledby="createCollegeModal"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form action="" method="post">
                 <input type="hidden" name="createCollege" value="1">
@@ -488,7 +504,8 @@ $rrw = $rs->fetch_assoc();
     </div>
 
     <!-- Edit College Modal -->
-    <div class="modal fade" id="editCollegeModal" tabindex="-1" role="dialog" aria-labelledby="editCollegeModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editCollegeModal" tabindex="-1" role="dialog" aria-labelledby="editCollegeModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -557,16 +574,34 @@ $rrw = $rs->fetch_assoc();
     }
     </script>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- jQuery Easing -->
+    <!-- Bootstrap core JavaScript-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-    <!-- Custom JS -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/ruang-admin.min.js"></script>
-    <!-- Chart.js -->
+    <!-- Page level plugins -->
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <!-- <script src="js/your-custom-script.js"></script> -->
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Select2 Bootstrap 4 Theme (optional) -->
+    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.6.2/dist/select2-bootstrap4.min.css"
+        rel="stylesheet" />
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="js/demo/chart-area-demo.js"></script>
 </body>
+
 </html>

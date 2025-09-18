@@ -174,21 +174,24 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
     </script>
 </head>
 <style>
-#sidebar {
+#accordionSidebar {
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     z-index: 1030;
-    width: 250px;
+    width: 220px;
 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #content-wrapper {
     padding-left: 220px;
-    transition: margin-left 0.3s ease;
     overflow-x: hidden;
+    position: relative;
+    z-index: 1;
+    background-color: #f8f9fc;
+    min-height: 100vh;
 }
 
 body.sidebar-toggled #content-wrapper {
@@ -202,27 +205,28 @@ body.sidebar-toggled #content-wrapper {
 }
 
 @media (max-width: 768px) {
-    #sidebar {
-        position: fixed;
-        width: 100%;
+    #accordionSidebar {
+        position: static;
+        width: fit-content;
         height: auto;
+        display: block !important;
     }
 
     #content-wrapper {
-        margin-left: 0;
+        margin-left: 0%;
         overflow-x: auto;
     }
 
-    .sidebar.toggled {
-        width: 100% !important;
-    }
+
 }
 
 /* Additional responsive fixes */
 @media (max-width: 768px) {
-    #sidebar {
-        margin-left: 0 !important;
-        width: 250px !important;
+    #accordionSidebar {
+        position: static;
+        width: fit-content;
+        height: auto;
+        display: block !important;
     }
 
     #content-wrapper {
@@ -231,7 +235,7 @@ body.sidebar-toggled #content-wrapper {
         overflow-x: hidden !important;
     }
 
-    .container-fluid,
+    /* .container-fluid,
     .card {
         padding-left: 0 !important;
         padding-right: 0 !important;
@@ -241,7 +245,7 @@ body.sidebar-toggled #content-wrapper {
 
     form .form-group {
         margin-bottom: 1rem !important;
-    }
+    }*/
 }
 
 /* Additional responsive fixes
@@ -280,11 +284,11 @@ body.sidebar-toggled #content-wrapper {
 
 <body id="page-top">
     <div id="wrapper">
-        <div id="sidebar" class="sidebar">
+        <div id="accordionSidebar">
             <?php include "Includes/sidebar.php"; ?>
         </div>
         <!-- Sidebar -->
-        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
@@ -490,15 +494,58 @@ body.sidebar-toggled #content-wrapper {
             <i class="fas fa-angle-up"></i>
         </a>
 
+
+        <!-- Bootstrap core JavaScript-->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
         <script src="js/ruang-admin.min.js"></script>
         <!-- Page level plugins -->
         <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
         <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- <script src="js/your-custom-script.js"></script> -->
+        <!-- Select2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+        <!-- Select2 Bootstrap 4 Theme (optional) -->
+        <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.6.2/dist/select2-bootstrap4.min.css"
+            rel="stylesheet" />
+
+        <!-- Select2 JS -->
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sidebar = document.getElementById("accordionSidebar"); // ✅ must match your sidebar ID
+            const toggleBtn = document.getElementById("sidebarToggleTop"); // ✅ must match your button ID
+
+            if (toggleBtn && sidebar) {
+                // Toggle sidebar open/close
+                toggleBtn.addEventListener("click", (e) => {
+                    e.stopPropagation(); // stop click from bubbling
+                    sidebar.classList.toggle("toggled");
+                });
+
+                // Close sidebar when clicking outside
+                document.addEventListener("click", (event) => {
+                    const isClickInside = sidebar.contains(event.target) || toggleBtn.contains(event
+                        .target);
+                    if (!isClickInside && sidebar.classList.contains("toggled")) {
+                        sidebar.classList.remove("toggled");
+                    }
+                });
+            } else {
+                console.warn("Sidebar or toggle button not found in DOM.");
+            }
+        });
+        </script>>
 
         <script>
         $(document).ready(function() {

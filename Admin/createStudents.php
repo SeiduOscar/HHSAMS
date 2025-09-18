@@ -181,8 +181,8 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
     <style>
     @media (max-width: 768px) {
         #sidebar {
-            position: fixed;
-            width: 100%;
+            position: static;
+            width: 60%;
             height: auto;
         }
 
