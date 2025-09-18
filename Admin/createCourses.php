@@ -212,13 +212,13 @@ $lecturerQuery = $conn->query("SELECT Id, CONCAT(firstName, ' ', lastName) AS na
 @media (max-width: 768px) {
     #sidebar {
         position: fixed;
-        width: 100%;
+        width: fit-content;
         height: auto;
         display: block !important;
     }
 
     #content-wrapper {
-        margin-left: 0;
+        margin-left: 0%;
         padding-left: 0;
     }
 }
