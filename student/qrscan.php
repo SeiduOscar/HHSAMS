@@ -32,64 +32,64 @@ include '../Includes/dbcon.php';
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="../Admin/js/sidebar-toggle.js"></script>
     <style>
-        /* SB Admin 2 Sidebar Styles */
+    /* SB Admin 2 Sidebar Styles */
+    .sidebar {
+        min-height: 100vh;
+        position: fixed;
+        width: 250px;
+        transition: all 0.3s;
+        z-index: 1000;
+    }
+
+    .sidebar.toggled {
+        width: 0;
+        overflow: hidden;
+    }
+
+    .content {
+        margin-left: 250px;
+        transition: all 0.3s;
+    }
+
+    .sidebar-hidden {
+        margin-left: 0 !important;
+    }
+
+    #qr-reader {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
         .sidebar {
-            min-height: 100vh;
-            position: fixed;
-            width: 250px;
-            transition: all 0.3s;
-            z-index: 1000;
+            margin-left: -250px;
         }
 
         .sidebar.toggled {
-            width: 0;
-            overflow: hidden;
+            margin-left: 0;
         }
 
         .content {
-            margin-left: 250px;
-            transition: all 0.3s;
+            margin-left: 0;
         }
 
-        .sidebar-hidden {
-            margin-left: 0 !important;
-        }
-
-        #qr-reader {
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
         }
 
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            .sidebar {
-                margin-left: -250px;
-            }
-
-            .sidebar.toggled {
-                margin-left: 0;
-            }
-
-            .content {
-                margin-left: 0;
-            }
-
-            .sidebar-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 999;
-                display: none;
-            }
-
-            .sidebar-toggled .sidebar-overlay {
-                display: block;
-            }
+        .sidebar-toggled .sidebar-overlay {
+            display: block;
         }
+    }
     </style>
 </head>
 
@@ -163,21 +163,21 @@ include '../Includes/dbcon.php';
                         </div>
                     </div>
                 </section>
-                <<<<<<< HEAD <script>
-                    let html5QrcodeScanner = null;
-                    let scanning = false;
+                <script>
+                let html5QrcodeScanner = null;
+                let scanning = false;
 
-                    function isValidUrl(string) {
+                function isValidUrl(string) {
                     try {
-                    new URL(string);
-                    return true;
+                        new URL(string);
+                        return true;
                     } catch (_) {
-                    return false;
+                        return false;
                     }
-                    }
+                }
 
 
-                    function showScanResult(decodedText) {
+                function showScanResult(decodedText) {
                     $('#scan-result').text(decodedText);
                     $('#qr-reader-results').removeClass('d-none');
                     // Do not hide the scanner, allow multiple scans
@@ -187,26 +187,26 @@ include '../Includes/dbcon.php';
                     // scanning = false;
 
                     if (isValidUrl(decodedText)) {
-                    $('#link-container').removeClass('d-none');
-                    $('#scanned-link').attr('href', decodedText).text(decodedText);
-                    $('#scan-result').removeClass('text-danger').addClass('text-muted');
+                        $('#link-container').removeClass('d-none');
+                        $('#scanned-link').attr('href', decodedText).text(decodedText);
+                        $('#scan-result').removeClass('text-danger').addClass('text-muted');
                     } else {
-                    $('#link-container').addClass('d-none');
-                    $('#scanned-link').attr('href', '#').text('');
-                    $('#scan-result').removeClass('text-muted').addClass('text-danger');
-                    $('#scan-result').text(decodedText + ' (Not a valid URL)');
+                        $('#link-container').addClass('d-none');
+                        $('#scanned-link').attr('href', '#').text('');
+                        $('#scan-result').removeClass('text-muted').addClass('text-danger');
+                        $('#scan-result').text(decodedText + ' (Not a valid URL)');
                     }
-                    }
+                }
 
-                    function resetScannerUI() {
+                function resetScannerUI() {
                     $('#qr-reader-results').addClass('d-none');
                     $('#scan-result').text('');
                     $('#link-container').addClass('d-none');
                     $('#scanned-link').attr('href', '#').text('');
                     $('#qr-reader').show();
-                    }
+                }
 
-                    function startScanner() {
+                function startScanner() {
                     if (scanning) return;
                     scanning = true;
                     $('#start-scan-btn').addClass('d-none');
@@ -214,81 +214,81 @@ include '../Includes/dbcon.php';
                     resetScannerUI();
 
                     if (!html5QrcodeScanner) {
-                    html5QrcodeScanner = new Html5Qrcode("qr-reader");
+                        html5QrcodeScanner = new Html5Qrcode("qr-reader");
                     }
                     html5QrcodeScanner.start({
-                    facingMode: "environment"
-                    }, {
-                    fps: 10,
-                    qrbox: 250
-                    },
-                    (decodedText, decodedResult) => {
-                    showScanResult(decodedText);
-                    // Do not stop the scanner, allow multiple scans
-                    },
-                    (errorMessage) => {
-                    // Optionally handle scan errors
-                    }
+                            facingMode: "environment"
+                        }, {
+                            fps: 10,
+                            qrbox: 250
+                        },
+                        (decodedText, decodedResult) => {
+                            showScanResult(decodedText);
+                            // Do not stop the scanner, allow multiple scans
+                        },
+                        (errorMessage) => {
+                            // Optionally handle scan errors
+                        }
                     ).catch(err => {
-                    scanning = false;
-                    alert("Unable to access camera or start scanner: " + err);
-                    $('#start-scan-btn').removeClass('d-none');
-                    $('#stop-scan-btn').addClass('d-none');
+                        scanning = false;
+                        alert("Unable to access camera or start scanner: " + err);
+                        $('#start-scan-btn').removeClass('d-none');
+                        $('#stop-scan-btn').addClass('d-none');
                     });
-                    }
+                }
 
-                    function stopScanner() {
+                function stopScanner() {
                     if (html5QrcodeScanner && scanning) {
-                    html5QrcodeScanner.stop().then(() => {
-                    scanning = false;
-                    $('#start-scan-btn').removeClass('d-none');
-                    $('#stop-scan-btn').addClass('d-none');
-                    $('#qr-reader').hide();
-                    });
+                        html5QrcodeScanner.stop().then(() => {
+                            scanning = false;
+                            $('#start-scan-btn').removeClass('d-none');
+                            $('#stop-scan-btn').addClass('d-none');
+                            $('#qr-reader').hide();
+                        });
                     }
-                    }
+                }
 
-                    $(document).ready(function() {
+                $(document).ready(function() {
                     $('#start-scan-btn').on('click', function() {
-                    $('#qr-reader').show();
-                    startScanner();
+                        $('#qr-reader').show();
+                        startScanner();
                     });
 
                     $('#stop-scan-btn').on('click', function() {
-                    stopScanner();
+                        stopScanner();
                     });
 
                     $('#scan-again-btn').on('click', function() {
-                    resetScannerUI();
-                    $('#qr-reader').show();
-                    startScanner();
+                        resetScannerUI();
+                        $('#qr-reader').show();
+                        startScanner();
                     });
 
                     $('#close-scan-btn').on('click', function() {
-                    resetScannerUI();
-                    $('#qr-reader').hide();
-                    $('#start-scan-btn').removeClass('d-none');
-                    $('#stop-scan-btn').addClass('d-none');
-                    if (scanning) stopScanner();
+                        resetScannerUI();
+                        $('#qr-reader').hide();
+                        $('#start-scan-btn').removeClass('d-none');
+                        $('#stop-scan-btn').addClass('d-none');
+                        if (scanning) stopScanner();
                     });
 
                     $('#copy-link-btn').on('click', function() {
-                    const link = $('#scanned-link').attr('href');
-                    navigator.clipboard.writeText(link).then(function() {
-                    alert('Link copied to clipboard!');
-                    });
+                        const link = $('#scanned-link').attr('href');
+                        navigator.clipboard.writeText(link).then(function() {
+                            alert('Link copied to clipboard!');
+                        });
                     });
 
                     $('#visit-link-btn').on('click', function() {
-                    const link = $('#scanned-link').attr('href');
-                    window.open(link, '_blank');
+                        const link = $('#scanned-link').attr('href');
+                        window.open(link, '_blank');
                     });
 
                     // Hide QR reader on load
                     $('#qr-reader').hide();
-                    });
-                    </script>
-                    </script>
+                });
+                </script>
+                </script>
             </main>
         </div>
     </div>

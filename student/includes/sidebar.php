@@ -24,7 +24,8 @@
                     echo htmlspecialchars($_SESSION['firstName'] . " " . $_SESSION['lastName']);
                     // ?> -->
                 </h5>
-                <small class="text-muted">Student</small>
+                <small
+                    class="text-muted"><?php echo htmlspecialchars($_SESSION['firstName'] . " " . $_SESSION['lastName']) ?></small>
             </div>
         </div>
         <!-- Close button for mobile -->

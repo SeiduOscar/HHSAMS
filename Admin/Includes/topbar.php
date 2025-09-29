@@ -3,8 +3,8 @@
 // session_start();
 
 if (!isset($_SESSION['userId'])) {
-  echo "<script>alert('Session Expired. Please Login Again');</script>";
-  echo "<meta http-equiv='refresh' content='0; url=../index.php'>";
+    echo "<script>alert('Session Expired. Please Login Again');</script>";
+    echo "<meta http-equiv='refresh' content='0; url=../index.php'>";
 }
 
 $query = "SELECT * FROM tbladmin WHERE Id = " . $_SESSION['userId'] . "";
@@ -16,9 +16,9 @@ $fullName = $rows['firstName'] . " " . $rows['lastName'];
 
 
 ?>
-<nav class="navbar navbar-expand navbar-light bg-gradient-primary topbar mb-4 static-top">
+<nav class="navbar navbar-expand navbar-light bg-success topbar mb-4 static-top">
     <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3" type="button" aria-label="Toggle navigation">
-        <i class="fa fa-bars"></i>
+        <i class="fa fa-bars text-white"></i>
     </button>
     <div class="text-white big" style="margin-left:100px;"><b></b></div>
     <ul class="navbar-nav ml-auto">

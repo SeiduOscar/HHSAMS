@@ -136,8 +136,12 @@ include '../Includes/dbcon.php';
         }
 
         .content {
-            margin-left: 250px;
+            margin-left: 0;
             transition: all 0.3s;
+        }
+
+        body.sidebar-toggled .content {
+            margin-left: 0;
         }
 
         .sidebar.collapsed {

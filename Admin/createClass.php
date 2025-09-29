@@ -146,7 +146,7 @@ if (isset($_GET['Id']) && isset($_GET['action']) && $_GET['action'] == "delete")
     <div id="wrapper">
         <!-- Sidebar -->
         <?php include "Includes/sidebar.php"; ?>
-        <!-- Sidebar -->
+        <!-- TopBar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
