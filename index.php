@@ -15,7 +15,7 @@ session_start();
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="img/logo/attnlg.jpg" rel="icon">
-    <title>AMS - Login</title>
+    <title>SAMS - Login</title>
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="css/ruang-admin.min.css" rel="stylesheet">
@@ -34,7 +34,7 @@ session_start();
                 <div class="card shadow-sm my-5">
                     <div class="card-body p-0">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12 ">
                                 <div class="login-form">
                                     <h5 align="center">STUDENT ATTENDANCE SYSTEM</h5>
                                     <div class="text-center">

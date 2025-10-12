@@ -27,27 +27,27 @@ include '../Includes/session.php';
     <link href="css/ruang-admin.min.css" rel="stylesheet">
 
     <style>
-    #sidebar {
-        position: fixed;
-        /* keeps it in place */
-        top: 0;
-        left: 0;
-        height: 100vh;
-        /* full height */
-        width: 250px;
-        /* adjust as needed */
+        #sidebar {
+            position: fixed;
+            /* keeps it in place */
+            top: 0;
+            left: 0;
+            height: 100vh;
+            /* full height */
+            width: 250px;
+            /* adjust as needed */
 
-        color: white;
-        overflow-y: auto;
-        z-index: 1000;
-    }
+            color: white;
+            overflow-y: auto;
+            z-index: 1000;
+        }
 
-    #content-wrapper {
-        margin-left: 220px;
-        /* same as #sidebar width */
+        #content-wrapper {
+            margin-left: 220px;
+            /* same as #sidebar width */
 
-        /* optional for spacing */
-    }
+            /* optional for spacing */
+        }
     </style>
 
 </head>
@@ -165,10 +165,10 @@ include '../Includes/session.php';
                                                         $trendType = $_POST['trend'] ?? 'weekly';
                                                         $trendTypes = ['weekly' => 'Weekly', 'monthly' => 'Monthly', 'yearly' => 'Yearly'];
                                                         foreach ($trendTypes as $type => $label): ?>
-                                                        <button type="submit" name="trend" value="<?php echo $type; ?>"
-                                                            class="btn btn-sm <?php echo $trendType === $type ? 'btn-primary' : 'btn-outline-primary'; ?>">
-                                                            <?php echo $label; ?>
-                                                        </button>
+                                                            <button type="submit" name="trend" value="<?php echo $type; ?>"
+                                                                class="btn btn-sm <?php echo $trendType === $type ? 'btn-primary' : 'btn-outline-primary'; ?>">
+                                                                <?php echo $label; ?>
+                                                            </button>
                                                         <?php endforeach; ?>
                                                         <!-- Preserve filters -->
                                                         <input type="hidden" name="course"
@@ -277,6 +277,7 @@ include '../Includes/session.php';
                                                                     <th>Class Arm</th>
                                                                     <th>Status</th>
                                                                     <th>Date</th>
+                                                                    <th>Action</th>
                                                                 </tr>
                                                             </thead>
 
@@ -325,6 +326,8 @@ include '../Includes/session.php';
                                                 <td>" . $classArmRow['classArmName'] . "</td>                               
                                                 <td style='background-color:" . $colour . "'>" . $status . "</td>
                                                 <td>" . $rows['dateTimeTaken'] . "</td>
+                                                <td>
+                                                    <a href='editAttendance.php?admissionNo=" . $rows['admissionNo'] . "&dateTimeTaken=" . $rows['dateTimeTaken'] . "&course=" . $course . "&status=" . $status . "' class='btn btn-sm btn-primary'>Change Status</a>
                                             </tr>";
                                                                         }
                                                                     } else {
@@ -381,13 +384,13 @@ include '../Includes/session.php';
                     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
                     <script src="js/ruang-admin.min.js"></script>
                     <script>
-                    const ctx = document.getElementById('attendanceChart').getContext('2d');
-                    if (window.attendanceChartInstance) window.attendanceChartInstance.destroy();
-                    window.attendanceChartInstance = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: <?php echo json_encode($labels); ?>,
-                            datasets: [{
+                        const ctx = document.getElementById('attendanceChart').getContext('2d');
+                        if (window.attendanceChartInstance) window.attendanceChartInstance.destroy();
+                        window.attendanceChartInstance = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: <?php echo json_encode($labels); ?>,
+                                datasets: [{
                                     label: 'Present',
                                     data: <?php echo json_encode($present); ?>,
                                     borderColor: '#28a745',
@@ -407,33 +410,33 @@ include '../Includes/session.php';
                                     pointRadius: 4,
                                     pointBackgroundColor: '#dc3545'
                                 }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    display: true
-                                }
+                                ]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        stepSize: 1
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: true
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        ticks: {
+                                            stepSize: 1
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
                     </script>
 
                     <!-- Page level custom scripts -->
                     <script>
-                    $(document).ready(function() {
-                        $('#dataTable').DataTable(); // ID From dataTable 
-                        $('#dataTableHover').DataTable(); // ID From dataTable with Hover
-                    });
+                        $(document).ready(function () {
+                            $('#dataTable').DataTable(); // ID From dataTable 
+                            $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+                        });
                     </script>
 </body>
 

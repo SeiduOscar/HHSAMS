@@ -21,7 +21,7 @@ include '../Includes/dbcon.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="img/logo/attnlg.jpg" rel="icon">
-    <title>Student Dashboard</title>
+    <title>SAMS-Student Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="../Admin/css/sidebar-fix.css">
@@ -33,118 +33,16 @@ include '../Includes/dbcon.php';
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="../Admin/js/sidebar-toggle.js"></script>
     <style>
-    .sidebar {
-        min-height: 100vh;
-        position: fixed;
-        width: 250px;
-        transition: all 0.3s;
-        z-index: 1000;
-    }
-
-    .content {
-        margin-left: 250px;
-        margin-left: -250px;
-    }
-
-    .content.expanded {
-        margin-left: 0;
-    }
-
-    .stat-card {
-        border-left: 4px solid;
-    }
-
-    .stat-card.present {
-        border-left-color: #28a745;
-    }
-
-    .stat-card.absent {
-        border-left-color: #dc3545;
-    }
-
-    .stat-card.courses {
-        border-left-color: #007bff;
-    }
-
-    .course-card {
-        transition: all 0.3s ease;
-    }
-
-    .course-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-link.active {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    #qr-reader {
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-    }
-
-    #qr-reader__dashboard_section_csr {
-        border-radius: 8px;
-    }
-
-    /* SB Admin 2 Sidebar Styles */
-    .sidebar {
-        min-height: 100vh;
-        position: fixed;
-        width: 250px;
-        transition: all 0.3s;
-        z-index: 1000;
-    }
-
-    .sidebar.toggled {
-        width: 0;
-        overflow: hidden;
-    }
-
-    .content {
-        margin-left: 250px;
-        transition: all 0.3s;
-    }
-
-    .sidebar-hidden {
-        margin-left: 0 !important;
-    }
-
-    /* Desktop Styles */
-    @media (min-width: 769px) {
-        .sidebar.toggled {
-            width: 0;
-            overflow: hidden;
-        }
-    }
-
-    /* Mobile Styles */
-    @media (max-width: 768px) {
         .sidebar {
-            margin-left: -250px;
+            min-height: 100vh;
+            position: fixed;
             width: 250px;
-        }
-
-        .sidebar.toggled {
-            margin-left: 0;
-            width: 250px;
-            /* Ensure width is restored on mobile */
-            overflow: visible;
-
+            transition: all 0.3s;
+            z-index: 1000;
         }
 
         .content {
-            margin-left: 0;
-            transition: all 0.3s;
-        }
-
-        body.sidebar-toggled .content {
-            margin-left: 0;
-        }
-
-        .sidebar.collapsed {
+            margin-left: 250px;
             margin-left: -250px;
         }
 
@@ -152,43 +50,145 @@ include '../Includes/dbcon.php';
             margin-left: 0;
         }
 
+        .stat-card {
+            border-left: 4px solid;
+        }
 
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .stat-card.present {
+            border-left-color: #28a745;
+        }
+
+        .stat-card.absent {
+            border-left-color: #dc3545;
+        }
+
+        .stat-card.courses {
+            border-left-color: #007bff;
+        }
+
+        .course-card {
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #qr-reader {
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        .sidebar-toggled .sidebar-overlay {
-            display: block;
+        #qr-reader__dashboard_section_csr {
+            border-radius: 8px;
         }
-    }
 
-    /* Sidebar toggle button */
-    #sidebarToggleTop {
-        display: none;
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 1100;
-        background-color: #343a40;
-        border: none;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 4px;
-    }
+        /* SB Admin 2 Sidebar Styles */
+        .sidebar {
+            min-height: 100vh;
+            position: fixed;
+            width: 250px;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
 
-    /* Show toggle button on small screens */
-    @media (max-width: 767.98px) {
+        .sidebar.toggled {
+            width: 0;
+            overflow: hidden;
+        }
+
+        .content {
+            margin-left: 250px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-hidden {
+            margin-left: 0 !important;
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 769px) {
+            .sidebar.toggled {
+                width: 0;
+                overflow: hidden;
+            }
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                margin-left: -250px;
+                width: 250px;
+            }
+
+            .sidebar.toggled {
+                margin-left: 0;
+                width: 250px;
+                /* Ensure width is restored on mobile */
+                overflow: visible;
+
+            }
+
+            .content {
+                margin-left: 0;
+                transition: all 0.3s;
+            }
+
+            body.sidebar-toggled .content {
+                margin-left: 0;
+            }
+
+            .sidebar.collapsed {
+                margin-left: -250px;
+            }
+
+            .content.expanded {
+                margin-left: 0;
+            }
+
+
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                display: none;
+            }
+
+            .sidebar-toggled .sidebar-overlay {
+                display: block;
+            }
+        }
+
+        /* Sidebar toggle button */
         #sidebarToggleTop {
-            display: block;
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1100;
+            background-color: #343a40;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
         }
-    }
+
+        /* Show toggle button on small screens */
+        @media (max-width: 767.98px) {
+            #sidebarToggleTop {
+                display: block;
+            }
+        }
     </style>
 </head>
 
@@ -382,32 +382,32 @@ include '../Includes/dbcon.php';
 
                                                 foreach ($recentPresent as $present): ?>
 
-                                                <div
-                                                    class="list-group-item d-flex justify-content-between align-items-center">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="bg-success rounded-circle p-2 mr-3">
-                                                            <i class="fas fa-check text-white small"></i>
-                                                        </div>
-                                                        <div>
-                                                            <p class="font-weight-bold mb-0">
-                                                                <?php
+                                                    <div
+                                                        class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="bg-success rounded-circle p-2 mr-3">
+                                                                <i class="fas fa-check text-white small"></i>
+                                                            </div>
+                                                            <div>
+                                                                <p class="font-weight-bold mb-0">
+                                                                    <?php
 
                                                                     $courNameQuery = mysqli_query($conn, "SELECT courseName FROM tblcourses WHERE courseCode = '" . $present['courseCode'] . "'");
                                                                     $PresentcourNameRow = mysqli_fetch_assoc($courNameQuery);
 
                                                                     echo htmlspecialchars($PresentcourNameRow['courseName']);
                                                                     ?>
-                                                            </p>
-                                                            <small
-                                                                class="text-muted"><?php echo htmlspecialchars($present['dateTimeTaken']); ?></small>
+                                                                </p>
+                                                                <small
+                                                                    class="text-muted"><?php echo htmlspecialchars($present['dateTimeTaken']); ?></small>
+                                                            </div>
                                                         </div>
+                                                        <span class="badge badge-success">Present</span>
                                                     </div>
-                                                    <span class="badge badge-success">Present</span>
-                                                </div>
                                                 <?php endforeach; ?>
                                                 <?php if (empty($recentPresent)): ?>
-                                                <div class="list-group-item text-muted">No recent present attendance
-                                                    records found.</div>
+                                                    <div class="list-group-item text-muted">No recent present attendance
+                                                        records found.</div>
 
                                                 <?php endif; ?>
                                             </div>
@@ -438,32 +438,32 @@ include '../Includes/dbcon.php';
 
                                                 foreach ($recentAbsent as $absent): ?>
 
-                                                <div
-                                                    class="list-group-item d-flex justify-content-between align-items-center">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="bg-danger rounded-circle p-2 mr-3">
-                                                            <i class="fas fa-times text-white small"></i>
-                                                        </div>
-                                                        <div>
-                                                            <p class="font-weight-bold mb-0">
-                                                                <?php
+                                                    <div
+                                                        class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="bg-danger rounded-circle p-2 mr-3">
+                                                                <i class="fas fa-times text-white small"></i>
+                                                            </div>
+                                                            <div>
+                                                                <p class="font-weight-bold mb-0">
+                                                                    <?php
 
                                                                     $courNameQuery = mysqli_query($conn, "SELECT courseName FROM tblcourses WHERE courseCode = '" . $absent['courseCode'] . "'");
                                                                     $courNameRow = mysqli_fetch_assoc($courNameQuery);
 
                                                                     echo htmlspecialchars($courNameRow['courseName']); ?>
 
-                                                            </p>
-                                                            <small
-                                                                class="text-muted"><?php echo htmlspecialchars($absent['dateTimeTaken']); ?></small>
+                                                                </p>
+                                                                <small
+                                                                    class="text-muted"><?php echo htmlspecialchars($absent['dateTimeTaken']); ?></small>
+                                                            </div>
                                                         </div>
+                                                        <span class="badge badge-danger">Absent</span>
                                                     </div>
-                                                    <span class="badge badge-danger">Absent</span>
-                                                </div>
                                                 <?php endforeach; ?>
                                                 <?php if (empty($recentAbsent)): ?>
-                                                <div class="list-group-item text-muted">No recent absent attendance
-                                                    records found.</div>
+                                                    <div class="list-group-item text-muted">No recent absent attendance
+                                                        records found.</div>
 
                                                 <?php endif; ?>
                                             </div>
