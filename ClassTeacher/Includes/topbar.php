@@ -9,9 +9,8 @@ $fullName = $rows['firstName'] . " " . $rows['lastName'];
 
 ?>
 <nav class="navbar navbar-expand navbar-light bg-success topbar mb-4 static-top">
-    <button class="btn btn-link rounded-circle mr-3 d-lg-none" type="button" data-toggle="collapse"
-        data-target="#sidebarWrapper" aria-controls="sidebarWrapper" aria-expanded="false" aria-label="Toggle sidebar">
-        <i class="fa fa-bars"></i>
+    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3" type="button" aria-label="Toggle navigation">
+        <i class="fa fa-bars text-white"></i>
     </button>
     <div class="text-white big" style="margin-left:100px;"></div>
     <ul class="navbar-nav ml-auto">

@@ -1,4 +1,6 @@
 <?php
+error_reporting(1);
+
 include 'Includes/dbcon.php';
 session_start();
 
@@ -119,7 +121,7 @@ session_start();
                                                 $_SESSION['lastName'] = $rows['lastName'];
                                                 $_SESSION['emailAddress'] = $rows['emailAddress'];
 
-                                                include_once('./Includes/intialize_promotion.php');
+                                                // include_once('./Includes/intialize_promotion.php');
 
                                                 echo "<script type = \"text/javascript\">
     window.location = (\"ClassTeacher/index.php\")

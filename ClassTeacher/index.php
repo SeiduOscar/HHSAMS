@@ -162,36 +162,83 @@ $absent = array_reverse($absent);
         }
 
 
-        #sidebar {
+        .sidebar {
             position: fixed;
-            /* keeps it in place */
             top: 0;
             left: 0;
             height: 100vh;
-            /* full height */
             width: 250px;
-            /* adjust as needed */
-
             color: white;
             overflow-y: auto;
             z-index: 1000;
         }
-
         #content-wrapper {
             margin-left: 220px;
-            /* same as #sidebar width */
-
-            /* optional for spacing */
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                overflow: hidden;
+                transition: all .3s ease-in-out;
+                -webkit-transition: all .3s ease-in-out;
+            }
+            .sidebar.toggled {
+                width: 60vw;
+                transition: all .3s ease-in-out;
+                -webkit-transition: all .3s ease-in-out;
+            }
+            #content-wrapper {
+                margin-left: 0;
+            }
+            /* Cards stack vertically */
+            .col-xl-3, .col-md-6, .col-lg-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            /* Forms stack */
+            .row.g-3 .col-md-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            /* Buttons full-width */
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .attendance-btn {
+                flex-direction: column;
+                gap: 5px;
+            }
+            .attendance-btn button {
+                width: 100%;
+            }
+            /* Chart container */
+            .chart-container {
+                height: 300px !important;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #content-wrapper {
+                margin-left: 200px;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            #content-wrapper {
+                margin-left: 220px;
+            }
+        }
+       
     </style>
 </head>
 
 <body id="page-top">
     <div id="wrapper">
-        <div id="sidebar">
-            <!-- Sidebar -->
-            <?php include "Includes/sidebar.php"; ?>
-        </div>
+        <!-- Sidebar -->
+        <?php include "Includes/sidebar.php"; ?>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -644,6 +691,7 @@ $absent = array_reverse($absent);
             </div>
 
 
+
             <!-- Attendance Trends Chart -->
             <div class="bg-white rounded-lg shadow p-4 mb-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
@@ -662,7 +710,7 @@ $absent = array_reverse($absent);
 
                 </div>
 
-                <div class="chart-container relative">
+                <div class="chart-container relative" style="width: 100%; height: 400px;">
                     <?php
                     $labels = [];
                     $present = [];
@@ -674,10 +722,10 @@ $absent = array_reverse($absent);
                             $year = date('Y', strtotime("-$i year"));
                             $labels[] = $year;
 
-                            $query = "SELECT 
+                            $query = "SELECT
                             SUM(status='1' ) as present_count,
                             SUM(status='0') as absent_count
-                          FROM tblattendance 
+                          FROM tblattendance
                           WHERE lecturer_id = '$lecturerId' AND YEAR(dateTimeTaken) = '$year'";
                             $result = mysqli_query($conn, $query);
                             $row = mysqli_fetch_assoc($result);
@@ -689,11 +737,11 @@ $absent = array_reverse($absent);
                             $month = date('Y-m', strtotime("-$i month"));
                             $labels[] = date('M Y', strtotime($month));
 
-                            $query = "SELECT 
+                            $query = "SELECT
                             SUM(status='1' ) as present_count,
                             SUM(status='0') as absent_count
-                          FROM tblattendance 
-                          WHERE lecturer_id = '$lecturerId' 
+                          FROM tblattendance
+                          WHERE lecturer_id = '$lecturerId'
                           AND DATE_FORMAT(dateTimeTaken, '%Y-%m') = '$month'";
                             $result = mysqli_query($conn, $query);
                             $row = mysqli_fetch_assoc($result);
@@ -706,10 +754,10 @@ $absent = array_reverse($absent);
                             $end = date('Y-m-d', strtotime("$start +6 days"));
                             $labels[] = date('M j', strtotime($start)) . '-' . date('M j', strtotime($end));
 
-                            $query = "SELECT 
+                            $query = "SELECT
                             SUM(status='1' ) as present_count,
                             SUM(status='0') as absent_count
-                          FROM tblattendance 
+                          FROM tblattendance
                           WHERE lecturer_id = '$lecturerId'
                           AND dateTimeTaken BETWEEN '$start' AND '$end'";
                             $result = mysqli_query($conn, $query);
@@ -719,7 +767,7 @@ $absent = array_reverse($absent);
                         }
                     }
                     ?>
-                    <canvas id="attendanceChart"></canvas>
+                    <canvas id="attendanceChart" style="max-width: 100%; height: 100%;"></canvas>
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script>
                         const ctx = document.getElementById('attendanceChart').getContext('2d');
@@ -752,6 +800,7 @@ $absent = array_reverse($absent);
                             },
                             options: {
                                 responsive: true,
+                                maintainAspectRatio: false,
                                 plugins: {
                                     legend: {
                                         display: true
@@ -837,17 +886,14 @@ $absent = array_reverse($absent);
     </div>
     <!--Row-->
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>
-
-
     <script src="../vendor/jquery/jquery.min.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/ruang-admin.min.js"></script>
 
-    <script src="js/demo/chart-area-demo.js"></script>
+    <!-- <script src="js/demo/chart-area-demo.js"></script> -->
+
+
 </body>
 
 </html>
