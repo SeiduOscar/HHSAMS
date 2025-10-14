@@ -78,165 +78,167 @@ $absent = array_reverse($absent);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .large-card {
+        margin-top: 1%;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+        background: white;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .attendance-btn {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .attendance-btn button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .attendance-btn button:hover {
+        background-color: #0056b3;
+    }
+
+    .graph {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    canvas {
+        max-width: 100%;
+    }
+
+    #chartContainer,
+    #listContainer {
+        width: 100%;
+        height: 350px;
+        overflow-y: auto;
+    }
+
+    #listContainer {
+        display: none;
+    }
+
+    .controls {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .controls label {
+        font-size: 14px;
+    }
+
+    .controls button {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        background: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .controls button.active {
+        background: #007bff;
+        color: white;
+    }
+
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 250px;
+        color: white;
+        overflow-y: auto;
+        z-index: 1000;
+        transition: width .3s;
+    }
+
+    #content-wrapper {
+        margin-left: 250px;
+        transition: margin-left .3s;
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 0 !important;
+            overflow: hidden;
         }
 
-        .large-card {
-            margin-top: 1%;
-            width: 100%;
-            height: auto;
-            padding: 20px;
-            background: white;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+        .sidebar.toggled {
+            width: 80vw !important;
         }
 
-        .attendance-btn {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+        #content-wrapper {
+            margin-left: 0 !important;
         }
 
-        .attendance-btn button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
+        .container-fluid,
+        .content-wrapper {
+            width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 2vw !important;
+            min-height: 100vh;
+            background: #f8f9fc;
         }
 
-        .attendance-btn button:hover {
-            background-color: #0056b3;
-        }
-
-        .graph {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        canvas {
+        .col-xl-3,
+        .col-md-6,
+        .col-lg-4 {
+            flex: 0 0 100%;
             max-width: 100%;
         }
 
-        #chartContainer,
-        #listContainer {
+        .row.g-3 .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .btn {
             width: 100%;
-            height: 350px;
-            overflow-y: auto;
+            margin-bottom: 10px;
         }
 
-        #listContainer {
-            display: none;
+        .attendance-btn {
+            flex-direction: column;
+            gap: 5px;
         }
 
-        .controls {
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
+        .attendance-btn button {
+            width: 100%;
         }
 
-        .controls label {
-            font-size: 14px;
+        .chart-container {
+            height: 300px !important;
         }
-
-        .controls button {
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            background: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .controls button.active {
-            background: #007bff;
-            color: white;
-        }
-
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 250px;
-            color: white;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-        #content-wrapper {
-            margin-left: 220px;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 0;
-                overflow: hidden;
-                transition: all .3s ease-in-out;
-                -webkit-transition: all .3s ease-in-out;
-            }
-            .sidebar.toggled {
-                width: 60vw;
-                transition: all .3s ease-in-out;
-                -webkit-transition: all .3s ease-in-out;
-            }
-            #content-wrapper {
-                margin-left: 0;
-            }
-            /* Cards stack vertically */
-            .col-xl-3, .col-md-6, .col-lg-4 {
-                flex: 0 0 100%;
-                max-width: 100%;
-            }
-            /* Forms stack */
-            .row.g-3 .col-md-6 {
-                flex: 0 0 100%;
-                max-width: 100%;
-            }
-            /* Buttons full-width */
-            .btn {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            .attendance-btn {
-                flex-direction: column;
-                gap: 5px;
-            }
-            .attendance-btn button {
-                width: 100%;
-            }
-            /* Chart container */
-            .chart-container {
-                height: 300px !important;
-            }
-        }
-
-        @media (min-width: 769px) and (max-width: 1024px) {
-            #content-wrapper {
-                margin-left: 200px;
-            }
-        }
-
-        @media (min-width: 1025px) {
-            #content-wrapper {
-                margin-left: 220px;
-            }
-        }
-       
+    }
     </style>
 </head>
 
 <body id="page-top">
     <div id="wrapper">
+
+
         <!-- Sidebar -->
         <?php include "Includes/sidebar.php"; ?>
         <!-- Sidebar -->
@@ -665,26 +667,26 @@ $absent = array_reverse($absent);
 
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
                     <script>
-                        function showQRCodePopup() {
-                            const container = document.getElementById('qrCodeContainer');
-                            container.innerHTML = '';
-                            const qrCode = new QRCode(container, {
-                                text: "<?php echo $encodedLink; ?>",
-                                width: 256,
-                                height: 256
-                            });
-                            container.style.display = 'block'; // Ensure the container is visible
-                            document.getElementById('qrCodePopup').style.display = 'block';
-                            document.getElementById('overlay').style.display = 'block';
-                        }
+                    function showQRCodePopup() {
+                        const container = document.getElementById('qrCodeContainer');
+                        container.innerHTML = '';
+                        const qrCode = new QRCode(container, {
+                            text: "<?php echo $encodedLink; ?>",
+                            width: 256,
+                            height: 256
+                        });
+                        container.style.display = 'block'; // Ensure the container is visible
+                        document.getElementById('qrCodePopup').style.display = 'block';
+                        document.getElementById('overlay').style.display = 'block';
+                    }
 
-                        function closeQRCodePopup() {
-                            document.getElementById('qrCodePopup').style.display = 'none';
-                            document.getElementById('qrCodeContainer').style.display =
-                                'none'; // Hide the QR code container
-                            document.getElementById('qrCodePopup').style.display = 'none';
-                            document.getElementById('overlay').style.display = 'none';
-                        }
+                    function closeQRCodePopup() {
+                        document.getElementById('qrCodePopup').style.display = 'none';
+                        document.getElementById('qrCodeContainer').style.display =
+                            'none'; // Hide the QR code container
+                        document.getElementById('qrCodePopup').style.display = 'none';
+                        document.getElementById('overlay').style.display = 'none';
+                    }
                     </script>
                     </script>
                 </div>
@@ -701,10 +703,10 @@ $absent = array_reverse($absent);
                         $trendType = $_GET['trend'] ?? 'weekly';
                         $trendTypes = ['weekly' => 'Weekly', 'monthly' => 'Monthly', 'yearly' => 'Yearly'];
                         foreach ($trendTypes as $type => $label): ?>
-                            <button class="btn btn-primary" type="submit" name="trend" value="<?php echo $type; ?>"
-                                class="px-3 py-1 <?php echo $trendType === $type ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'; ?> rounded-full text-sm font-medium">
-                                <?php echo $label; ?>
-                            </button>
+                        <button class="btn btn-primary" type="submit" name="trend" value="<?php echo $type; ?>"
+                            class="px-3 py-1 <?php echo $trendType === $type ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'; ?> rounded-full text-sm font-medium">
+                            <?php echo $label; ?>
+                        </button>
                         <?php endforeach; ?>
                     </form>
 
@@ -770,13 +772,13 @@ $absent = array_reverse($absent);
                     <canvas id="attendanceChart" style="max-width: 100%; height: 100%;"></canvas>
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                     <script>
-                        const ctx = document.getElementById('attendanceChart').getContext('2d');
-                        if (window.attendanceChartInstance) window.attendanceChartInstance.destroy();
-                        window.attendanceChartInstance = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: <?php echo json_encode($labels); ?>,
-                                datasets: [{
+                    const ctx = document.getElementById('attendanceChart').getContext('2d');
+                    if (window.attendanceChartInstance) window.attendanceChartInstance.destroy();
+                    window.attendanceChartInstance = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: <?php echo json_encode($labels); ?>,
+                            datasets: [{
                                     label: 'Present',
                                     data: <?php echo json_encode($present); ?>,
                                     borderColor: '#28a745',
@@ -796,26 +798,26 @@ $absent = array_reverse($absent);
                                     pointRadius: 4,
                                     pointBackgroundColor: '#dc3545'
                                 }
-                                ]
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true
+                                }
                             },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        display: true
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        ticks: {
-                                            stepSize: 1
-                                        }
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
                                     }
                                 }
                             }
-                        });
+                        }
+                    });
                     </script>
                 </div>
             </div>
@@ -891,8 +893,14 @@ $absent = array_reverse($absent);
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/ruang-admin.min.js"></script>
 
-    <!-- <script src="js/demo/chart-area-demo.js"></script> -->
-
+    <script>
+    // Sidebar toggle for mobile
+    $(document).ready(function() {
+        $('#sidebarToggle').on('click', function() {
+            $('.sidebar').toggleClass('toggled');
+        });
+    });
+    </script>
 
 </body>
 

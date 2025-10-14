@@ -10,17 +10,32 @@ header("Content-Disposition: attachment; filename=\"$filename\"");
 header("Pragma: no-cache");
 header("Expires: 0");
 
-$dateTaken = date("Y-m-d");
-$query = "SELECT tblattendance.Id, tblattendance.status, tblattendance.dateTimeTaken, tblclass.className,
-        tblclassarms.classArmName, tblsessionterm.sessionName, tblsessionterm.termId, tblterm.termName,
-        tblstudents.firstName, tblstudents.lastName, tblstudents.otherName, tblstudents.admissionNumber
-        FROM tblattendance
-        INNER JOIN tblclass ON tblclass.Id = tblattendance.classId
-        INNER JOIN tblclassarms ON tblclassarms.Id = tblattendance.classArmId
-        INNER JOIN tblsessionterm ON tblsessionterm.Id = tblattendance.sessionTermId
-        INNER JOIN tblterm ON tblterm.Id = tblsessionterm.termId
-        INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
-        WHERE tblattendance.dateTimeTaken = '$dateTaken' AND tblattendance.classId = '$_SESSION[classId]' AND tblattendance.classArmId = '$_SESSION[classArmId]'";
+
+$courseCode = isset($_POST['course']) ? $_POST['course'] : '';
+$classArm = isset($_POST['classArm']) ? $_POST['classArm'] : '';
+$fromDate = isset($_POST['from_date']) ? $_POST['from_date'] : '';
+$toDate = isset($_POST['to_date']) ? $_POST['to_date'] : '';
+
+$where = [];
+$where[] = "tblattendance.lecturer_id = '{$_SESSION['userId']}'";
+if ($courseCode)
+    $where[] = "tblattendance.courseCode = '" . mysqli_real_escape_string($conn, $courseCode) . "'";
+if ($classArm)
+    $where[] = "tblattendance.classArmId = '" . mysqli_real_escape_string($conn, $classArm) . "'";
+if ($fromDate && $toDate)
+    $where[] = "tblattendance.dateTimeTaken BETWEEN '" . mysqli_real_escape_string($conn, $fromDate) . "' AND '" . mysqli_real_escape_string($conn, $toDate) . "'";
+else if ($fromDate)
+    $where[] = "tblattendance.dateTimeTaken >= '" . mysqli_real_escape_string($conn, $fromDate) . "'";
+else if ($toDate)
+    $where[] = "tblattendance.dateTimeTaken <= '" . mysqli_real_escape_string($conn, $toDate) . "'";
+
+$whereClause = implode(' AND ', $where);
+
+$query = "SELECT tblattendance.Id, tblattendance.status, tblattendance.dateTimeTaken,
+    tblstudents.firstName, tblstudents.lastName, tblstudents.otherName, tblstudents.admissionNumber
+    FROM tblattendance
+    INNER JOIN tblstudents ON tblstudents.admissionNumber = tblattendance.admissionNo
+    WHERE $whereClause";
 
 $ret = mysqli_query($conn, $query);
 

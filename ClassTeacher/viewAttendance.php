@@ -27,27 +27,27 @@ include '../Includes/session.php';
     <link href="css/ruang-admin.min.css" rel="stylesheet">
 
     <style>
-        #sidebar {
-            position: fixed;
-            /* keeps it in place */
-            top: 0;
-            left: 0;
-            height: 100vh;
-            /* full height */
-            width: 250px;
-            /* adjust as needed */
+    #sidebar {
+        position: fixed;
+        /* keeps it in place */
+        top: 0;
+        left: 0;
+        height: 100vh;
+        /* full height */
+        width: 250px;
+        /* adjust as needed */
 
-            color: white;
-            overflow-y: auto;
-            z-index: 1000;
-        }
+        color: white;
+        overflow-y: auto;
+        z-index: 1000;
+    }
 
-        #content-wrapper {
-            margin-left: 220px;
-            /* same as #sidebar width */
+    #content-wrapper {
+        margin-left: 220px;
+        /* same as #sidebar width */
 
-            /* optional for spacing */
-        }
+        /* optional for spacing */
+    }
     </style>
 
 </head>
@@ -144,6 +144,20 @@ include '../Includes/session.php';
                                                     <!-- Submit Button -->
                                                     <button type="submit" name="view" class="btn btn-success">View
                                                         Attendance</button>
+                                                    <!-- Export Button -->
+                                                    <form method="post" action="downloadRecord.php"
+                                                        style="display:inline;">
+                                                        <input type="hidden" name="course"
+                                                            value="<?php echo $_POST['course'] ?? ''; ?>">
+                                                        <input type="hidden" name="classArm"
+                                                            value="<?php echo $_POST['classArm'] ?? ''; ?>">
+                                                        <input type="hidden" name="from_date"
+                                                            value="<?php echo $_POST['from_date'] ?? ''; ?>">
+                                                        <input type="hidden" name="to_date"
+                                                            value="<?php echo $_POST['to_date'] ?? ''; ?>">
+                                                        <button type="submit" name="export"
+                                                            class="btn btn-primary ml-2">Export Attendance</button>
+                                                    </form>
                                                 </form>
                                             </div>
                                         </div>
@@ -165,10 +179,10 @@ include '../Includes/session.php';
                                                         $trendType = $_POST['trend'] ?? 'weekly';
                                                         $trendTypes = ['weekly' => 'Weekly', 'monthly' => 'Monthly', 'yearly' => 'Yearly'];
                                                         foreach ($trendTypes as $type => $label): ?>
-                                                            <button type="submit" name="trend" value="<?php echo $type; ?>"
-                                                                class="btn btn-sm <?php echo $trendType === $type ? 'btn-primary' : 'btn-outline-primary'; ?>">
-                                                                <?php echo $label; ?>
-                                                            </button>
+                                                        <button type="submit" name="trend" value="<?php echo $type; ?>"
+                                                            class="btn btn-sm <?php echo $trendType === $type ? 'btn-primary' : 'btn-outline-primary'; ?>">
+                                                            <?php echo $label; ?>
+                                                        </button>
                                                         <?php endforeach; ?>
                                                         <!-- Preserve filters -->
                                                         <input type="hidden" name="course"
@@ -384,13 +398,13 @@ include '../Includes/session.php';
                     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
                     <script src="js/ruang-admin.min.js"></script>
                     <script>
-                        const ctx = document.getElementById('attendanceChart').getContext('2d');
-                        if (window.attendanceChartInstance) window.attendanceChartInstance.destroy();
-                        window.attendanceChartInstance = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: <?php echo json_encode($labels); ?>,
-                                datasets: [{
+                    const ctx = document.getElementById('attendanceChart').getContext('2d');
+                    if (window.attendanceChartInstance) window.attendanceChartInstance.destroy();
+                    window.attendanceChartInstance = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: <?php echo json_encode($labels); ?>,
+                            datasets: [{
                                     label: 'Present',
                                     data: <?php echo json_encode($present); ?>,
                                     borderColor: '#28a745',
@@ -410,33 +424,33 @@ include '../Includes/session.php';
                                     pointRadius: 4,
                                     pointBackgroundColor: '#dc3545'
                                 }
-                                ]
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: true
+                                }
                             },
-                            options: {
-                                responsive: true,
-                                plugins: {
-                                    legend: {
-                                        display: true
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        ticks: {
-                                            stepSize: 1
-                                        }
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
                                     }
                                 }
                             }
-                        });
+                        }
+                    });
                     </script>
 
                     <!-- Page level custom scripts -->
                     <script>
-                        $(document).ready(function () {
-                            $('#dataTable').DataTable(); // ID From dataTable 
-                            $('#dataTableHover').DataTable(); // ID From dataTable with Hover
-                        });
+                    $(document).ready(function() {
+                        $('#dataTable').DataTable(); // ID From dataTable 
+                        $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+                    });
                     </script>
 </body>
 
