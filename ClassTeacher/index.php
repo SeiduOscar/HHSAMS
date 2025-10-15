@@ -175,7 +175,7 @@ $absent = array_reverse($absent);
     }
 
     #content-wrapper {
-        margin-left: 250px;
+        margin-left: 220px;
         transition: margin-left .3s;
     }
 
@@ -449,7 +449,7 @@ $absent = array_reverse($absent);
 
                                 </form>
                                 <div class="attendance-btn">
-                                    <a href="downloadRecord.php"><button type="submit" name="view"
+                                    <a href="./viewAttendance.php"><button name="view"
                                             class="btn btn-primary">Export Attendance</button></a>
                                     <a href="viewStudents.php"><button type="submit" name="view"
                                             class="btn btn-primary">View

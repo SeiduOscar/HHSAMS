@@ -143,29 +143,7 @@ if (isset($_POST['save'])) {
         }
     }
     </script>
-    <style>
-    #sidebar {
-        position: fixed;
-        /* keeps it in place */
-        top: 0;
-        left: 0;
-        height: 100vh;
-        /* full height */
-        width: 250px;
-        /* adjust as needed */
 
-        color: white;
-        overflow-y: auto;
-        z-index: 1000;
-    }
-
-    #content-wrapper {
-        margin-left: 220px;
-        /* same as #sidebar width */
-
-        /* optional for spacing */
-    }
-    </style>
 
 </head>
 
@@ -462,11 +440,7 @@ if (isset($_POST['save'])) {
     <!-- 4. Template JS -->
     <script src="js/ruang-admin.min.js"></script>
 
-
-    <script src="../vendor/jquery/jquery.min.js"></script>
-
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/ruang-admin.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js"></script>

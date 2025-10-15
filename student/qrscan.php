@@ -25,70 +25,17 @@ include '../Includes/dbcon.php';
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../Admin/css/sidebar-fix.css">
+    <link rel="stylesheet" href="css/sidebar-fix.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script src="../Admin/js/sidebar-toggle.js"></script>
+    <script src="js/sidebar-toggle.js"></script>
     <style>
-    /* SB Admin 2 Sidebar Styles */
-    .sidebar {
-        min-height: 100vh;
-        position: fixed;
-        width: 250px;
-        transition: all 0.3s;
-        z-index: 1000;
-    }
-
-    .sidebar.toggled {
-        width: 0;
-        overflow: hidden;
-    }
-
-    .content {
-        margin-left: 250px;
-        transition: all 0.3s;
-    }
-
-    .sidebar-hidden {
-        margin-left: 0 !important;
-    }
-
     #qr-reader {
         width: 100%;
         max-width: 500px;
         margin: 0 auto;
-    }
-
-    /* Mobile Styles */
-    @media (max-width: 768px) {
-        .sidebar {
-            margin-left: -250px;
-        }
-
-        .sidebar.toggled {
-            margin-left: 0;
-        }
-
-        .content {
-            margin-left: 0;
-        }
-
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-        }
-
-        .sidebar-toggled .sidebar-overlay {
-            display: block;
-        }
     }
     </style>
 </head>

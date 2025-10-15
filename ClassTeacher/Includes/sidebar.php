@@ -47,7 +47,7 @@
                 <a class="collapse-item" href="takeAttendance.php">Take Attendance</a>
                 <a class="collapse-item" href="viewAttendance.php">View Class Attendance</a>
                 <!-- <a class="collapse-item" href="viewStudentAttendance.php">View Student Attendance</a> -->
-                <a class="collapse-item" href="downloadRecord.php">Today's Report (xls)</a>
+                <!-- <a class="collapse-item" href="downloadRecord.php">Today's Report (xls)</a> -->
                 <!-- <a class="collapse-item" href="addMemberToContLevel.php ">Add Member to Level</a> -->
             </div>
         </div>

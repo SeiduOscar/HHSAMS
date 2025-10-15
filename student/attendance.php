@@ -202,89 +202,15 @@ if (isset($_GET['action'])) {
     <title>Student Attendance History</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../Admin/css/sidebar-fix.css">
+    <link rel="stylesheet" href="css/sidebar-fix.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="../Admin/js/sidebar-toggle.js"></script>
-    <style>
-    .sidebar {
-        min-height: 100vh;
-        position: fixed;
-        width: 250px;
-        transition: all 0.3s;
-        z-index: 1050;
-        left: 0;
-        top: 0;
-        background: #343a40;
-    }
+    <script src="js/sidebar-toggle.js"></script>
 
-    .content {
-        margin-left: 250px;
-        transition: all 0.3s;
-    }
-
-    .sidebar.toggled {
-        margin-left: -250px;
-    }
-
-    .sidebar-overlay {
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.3);
-        z-index: 1049;
-        display: none;
-    }
-
-    .sidebar-open .sidebar-overlay {
-        display: block;
-    }
-
-    .sidebar-open .sidebar {
-        margin-left: 0 !important;
-    }
-
-    .sidebar-open .content {
-        margin-left: 0 !important;
-    }
-
-    #sidebarToggleTop {
-        display: none;
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 1100;
-        background-color: #343a40;
-        border: none;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 4px;
-    }
-
-    @media (max-width: 768px) {
-        .sidebar {
-            margin-left: -250px;
-            width: 250px;
-        }
-
-        .sidebar.toggled {
-            margin-left: 0;
-        }
-
-        .content {
-            margin-left: 0;
-        }
-
-        #sidebarToggleTop {
-            display: block;
-        }
-    }
-    </style>
 </head>
 
 <body>

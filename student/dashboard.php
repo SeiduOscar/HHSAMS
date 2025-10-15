@@ -24,32 +24,15 @@ include '../Includes/dbcon.php';
     <title>SAMS-Student Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../Admin/css/sidebar-fix.css">
+    <link rel="stylesheet" href="css/sidebar-fix.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script src="../Admin/js/sidebar-toggle.js"></script>
+    <script src="js/sidebar-toggle.js"></script>
     <style>
-        .sidebar {
-            min-height: 100vh;
-            position: fixed;
-            width: 250px;
-            transition: all 0.3s;
-            z-index: 1000;
-        }
-
-        .content {
-            margin-left: 250px;
-            margin-left: -250px;
-        }
-
-        .content.expanded {
-            margin-left: 0;
-        }
-
         .stat-card {
             border-left: 4px solid;
         }
@@ -87,107 +70,6 @@ include '../Includes/dbcon.php';
 
         #qr-reader__dashboard_section_csr {
             border-radius: 8px;
-        }
-
-        /* SB Admin 2 Sidebar Styles */
-        .sidebar {
-            min-height: 100vh;
-            position: fixed;
-            width: 250px;
-            transition: all 0.3s;
-            z-index: 1000;
-        }
-
-        .sidebar.toggled {
-            width: 0;
-            overflow: hidden;
-        }
-
-        .content {
-            margin-left: 250px;
-            transition: all 0.3s;
-        }
-
-        .sidebar-hidden {
-            margin-left: 0 !important;
-        }
-
-        /* Desktop Styles */
-        @media (min-width: 769px) {
-            .sidebar.toggled {
-                width: 0;
-                overflow: hidden;
-            }
-        }
-
-        /* Mobile Styles */
-        @media (max-width: 768px) {
-            .sidebar {
-                margin-left: -250px;
-                width: 250px;
-            }
-
-            .sidebar.toggled {
-                margin-left: 0;
-                width: 250px;
-                /* Ensure width is restored on mobile */
-                overflow: visible;
-
-            }
-
-            .content {
-                margin-left: 0;
-                transition: all 0.3s;
-            }
-
-            body.sidebar-toggled .content {
-                margin-left: 0;
-            }
-
-            .sidebar.collapsed {
-                margin-left: -250px;
-            }
-
-            .content.expanded {
-                margin-left: 0;
-            }
-
-
-            .sidebar-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 999;
-                display: none;
-            }
-
-            .sidebar-toggled .sidebar-overlay {
-                display: block;
-            }
-        }
-
-        /* Sidebar toggle button */
-        #sidebarToggleTop {
-            display: none;
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1100;
-            background-color: #343a40;
-            border: none;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 4px;
-        }
-
-        /* Show toggle button on small screens */
-        @media (max-width: 767.98px) {
-            #sidebarToggleTop {
-                display: block;
-            }
         }
     </style>
 </head>

@@ -1,0 +1,136 @@
+/* Sidebar Toggle Fix Styles for Student Pages */
+
+/* Base sidebar styles */
+.sidebar {
+    min-height: 100vh;
+    position: fixed;
+    width: 250px;
+    transition: all 0.3s ease;
+    z-index: 1050;
+    background-color: #343a40;
+    color: white;
+}
+
+/* Content wrapper base styles */
+.content {
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+}
+
+/* Toggle button base styles */
+#sidebarToggleTop {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1100;
+    background-color: #343a40;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: none;
+    cursor: pointer;
+}
+
+/* Sidebar overlay for mobile */
+#sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1049;
+    display: none;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+/* Desktop styles (769px and above) */
+@media (min-width: 769px) {
+    .sidebar {
+        margin-left: 0;
+    }
+
+    .content {
+        margin-left: 250px;
+    }
+
+    .sidebar.toggled {
+        margin-left: -250px;
+    }
+
+    .sidebar.toggled + .content,
+    body.sidebar-toggled .content {
+        margin-left: 0;
+    }
+}
+
+/* Mobile styles (768px and below) */
+@media (max-width: 768px) {
+    .sidebar {
+        margin-left: -250px;
+        top: 0;
+        left: 0;
+        height: 100vh;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .sidebar.toggled {
+        margin-left: 0;
+    }
+
+    .sidebar.toggled + .content,
+    body.sidebar-toggled .content {
+        margin-left: 0;
+    }
+
+    #sidebarToggleTop {
+        display: block;
+    }
+
+    #sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .sidebar.toggled ~ #sidebar-overlay {
+        display: block;
+        opacity: 1;
+    }
+}
+
+/* Ensure proper hover states */
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Fix for navbar positioning */
+.navbar {
+    z-index: 1040;
+}
+
+/* Ensure proper spacing in toggled state */
+.sidebar.toggled .nav-item {
+    margin-bottom: 0;
+}
+
+/* Ensure proper transition for all elements */
+.sidebar, .sidebar *, .content, .content * {
+    transition: all 0.3s ease;
+}
+
+/* Override any conflicting styles */
+.sidebar.toggled {
+    margin-left: -250px !important;
+}
+
+@media (max-width: 768px) {
+    .sidebar.toggled {
+        margin-left: 0 !important;
+    }
+}
