@@ -269,9 +269,5 @@ This project is licensed under the terms included in the LICENSE file.
 
 ---
 
-
-
-
-
 *Last Updated: [11/10/2025]*
 *System Version: 1.0*

@@ -2,7 +2,7 @@
 error_reporting(0);
 include '../Includes/dbcon.php';
 include '../Includes/session.php';
-
+include './downloadRecord.php';
 
 
 ?>
@@ -145,19 +145,19 @@ include '../Includes/session.php';
                                                     <button type="submit" name="view" class="btn btn-success">View
                                                         Attendance</button>
                                                     <!-- Export Button -->
-                                                    <form method="post" action="downloadRecord.php"
-                                                        style="display:inline;">
+                                                    <!-- <form method="post" action="downloadRecord.php" -->
+                                                    <!-- style="display:inline;">
                                                         <input type="hidden" name="course"
-                                                            value="<?php echo $_POST['course'] ?? ''; ?>">
+                                                            value="<?php //echo $_POST['course'] ?? ''; ?>">
                                                         <input type="hidden" name="classArm"
-                                                            value="<?php echo $_POST['classArm'] ?? ''; ?>">
+                                                            value="<?php //echo $_POST['classArm'] ?? ''; ?>">
                                                         <input type="hidden" name="from_date"
-                                                            value="<?php echo $_POST['from_date'] ?? ''; ?>">
+                                                            value="<?php //echo $_POST['from_date'] ?? ''; ?>">
                                                         <input type="hidden" name="to_date"
-                                                            value="<?php echo $_POST['to_date'] ?? ''; ?>">
-                                                        <button type="submit" name="export"
-                                                            class="btn btn-primary ml-2">Export Attendance</button>
-                                                    </form>
+                                                            value="<?php //echo $_POST['to_date'] ?? ''; ?>"> -->
+                                                    <button type="submit" name="export"
+                                                        class="btn btn-primary ml-2">Export Attendance</button>
+
                                                 </form>
                                             </div>
                                         </div>
@@ -262,6 +262,7 @@ include '../Includes/session.php';
                                                             }
                                                         }
                                                     }
+
                                                     ?>
                                                     <canvas id="attendanceChart"></canvas>
                                                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

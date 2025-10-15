@@ -10,15 +10,15 @@ $fullName = $rows['firstName'] . " " . $rows['lastName'];
 ?>
 <nav class="navbar navbar-expand navbar-light bg-success topbar mb-4 static-top">
     <button id="sidebarToggle" type="button" class="btn btn-link d-md-none rounded-circle"
-        aria-label="Toggle navigation">
+        aria-label="Toggle navigation" onclick="toggleSidebar()">
         <i class="fa fa-bars text-white"></i>
     </button>
 
     <!-- Sidebar Toggle Button (visible on mobile) -->
     <!-- <button id="sidebarToggle" type="button" class="btn btn-link d-md-none rounded-circle"
-            style="position:fixed;top:10px;left:10px;z-index:1101;background:#343a40;color:#fff;">
-            <i class="fa fa-bars" style="font-size:1.5rem;"></i> -->
-    </button>
+        style="position:fixed;top:10px;left:10px;z-index:1101;background:#343a40;color:#fff;">
+        <i class="fa fa-bars" style="font-size:1.5rem;"></i>
+    </button> -->
     <div class="text-white big" style="margin-left:100px;"></div>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown no-arrow">

@@ -27,26 +27,121 @@ include '../Includes/session.php';
     <link href="css/ruang-admin.min.css" rel="stylesheet">
 
     <style>
+    /* Ensure sidebar content is visible and above overlay */
     #sidebar {
         position: fixed;
-        /* keeps it in place */
         top: 0;
         left: 0;
         height: 100vh;
-        /* full height */
-        width: 250px;
-        /* adjust as needed */
+        width: 290px;
+        background: #fdfdfeff;
+        color: #222;
+        overflow-y: auto;
+        z-index: 1102;
+        /* Above overlay */
+        transition: transform 0.3s, width 0.3s;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+        display: block !important;
+    }
 
+    #sidebar.hide {
+        transform: translateX(-100%);
+        pointer-events: none;
+    }
+
+    #sidebar.show {
+        transform: translateX(0);
+        pointer-events: auto;
+        display: block !important;
+    }
+
+    /* .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 250px;
         color: white;
         overflow-y: auto;
         z-index: 1000;
+        transition: width .3s;
+    } */
+
+    #sidebar.hide {
+        transform: translateX(-100%);
     }
 
     #content-wrapper {
         margin-left: 220px;
-        /* same as #sidebar width */
+        transition: margin-left 0.3s ease;
+    }
 
-        /* optional for spacing */
+    @media (max-width: 991.98px) {
+        #sidebar {
+            width: 80vw;
+            max-width: 80vw;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+            z-index: 1102;
+            display: block !important;
+        }
+
+        #sidebar.hide {
+            transform: translateX(-100%);
+            pointer-events: none;
+        }
+
+        #sidebar.show {
+            transform: translateX(0);
+            pointer-events: auto;
+            display: block !important;
+        }
+
+        #content-wrapper {
+            margin-left: 0;
+        }
+
+        .sidebar-toggle-btn {
+            display: block;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1103;
+        }
+
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1100;
+        }
+
+        #sidebar.show+#sidebar-overlay {
+            display: block;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .form-inline {
+            flex-direction: column !important;
+            align-items: stretch !important;
+        }
+
+        .form-group {
+            margin-bottom: 10px !important;
+            margin-right: 0 !important;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .card {
+            margin-bottom: 15px;
+        }
     }
     </style>
 
@@ -88,14 +183,12 @@ include '../Includes/session.php';
 
 <body id="page-top">
     <div id="wrapper">
-        <div class="collapse sidebar-collapse d-lg-block" id="sidebarWrapper">
-            <div id="sidebar">
-                <!-- Sidebar -->
-                <?php include "Includes/sidebar.php"; ?>
 
-                <!-- Sidebar -->
-            </div>
+        <!-- Sidebar -->
+        <div id="sidebar" class="hide">
+            <?php include "Includes/sidebar.php"; ?>
         </div>
+        <div id="sidebar-overlay" onclick="closeSidebar()"></div>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
                 <!-- TopBar -->
@@ -111,7 +204,7 @@ include '../Includes/session.php';
                             <li class="breadcrumb-item active" aria-current="page">Students in Class</li>
                         </ol>
                     </div>
-                    <div class="row d-flex flex-row">
+                    <div class="row">
                         <?php
 
                         $courseQuery = mysqli_query($conn, "SELECT * FROM tblcourses WHERE lecturer_id = '{$_SESSION['userId']}'");
@@ -269,7 +362,7 @@ include '../Includes/session.php';
 
                     <!-- Input Group -->
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-12">
                             <div class="card mb-4">
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -305,11 +398,11 @@ include '../Includes/session.php';
                                             </select>
                                         </div>
 
-                                        <button type="submit" class="btn btn-primary">Search</button>
+                                        <button type="submit" class="btn btn-primary w-100 mt-2">Search</button>
                                     </form>
                                 </div>
 
-                                <div class="table-responsive p-3">
+                                <div class="table-responsive p-3" style="overflow-x:auto;">
                                     <table class="table align-items-center table-flush table-hover" id="dataTableHover">
                                         <thead class="thead-light">
                                             <tr>
@@ -440,6 +533,39 @@ include '../Includes/session.php';
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/ruang-admin.min.js"></script>
+    <script>
+    function toggleSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        if (window.innerWidth < 992) {
+            if (sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                sidebar.classList.add('hide');
+            } else {
+                sidebar.classList.remove('hide');
+                sidebar.classList.add('show');
+            }
+        }
+    }
+    // Hide sidebar by default on mobile, show on desktop
+    document.addEventListener('DOMContentLoaded', function() {
+        var sidebar = document.getElementById('sidebar');
+        if (window.innerWidth < 992) {
+            sidebar.classList.add('hide');
+        } else {
+            sidebar.classList.remove('hide');
+            sidebar.classList.remove('show');
+        }
+    });
+    window.addEventListener('resize', function() {
+        var sidebar = document.getElementById('sidebar');
+        if (window.innerWidth < 992) {
+            sidebar.classList.add('hide');
+        } else {
+            sidebar.classList.remove('hide');
+            sidebar.classList.remove('show');
+        }
+    });
+    </script>
     <!-- Page level plugins -->
     <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
@@ -550,6 +676,54 @@ include '../Includes/session.php';
         });
     });
     </script>
-</body>
+    <script>
+    function toggleSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebar-overlay');
+        if (window.innerWidth < 992) {
+            if (sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                sidebar.classList.add('hide');
+                overlay.style.display = 'none';
+            } else {
+                sidebar.classList.remove('hide');
+                sidebar.classList.add('show');
+                overlay.style.display = 'block';
+            }
+        }
+    }
+
+    function closeSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebar-overlay');
+        sidebar.classList.remove('show');
+        sidebar.classList.add('hide');
+        overlay.style.display = 'none';
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebar-overlay');
+        if (window.innerWidth < 992) {
+            sidebar.classList.add('hide');
+            overlay.style.display = 'none';
+        } else {
+            sidebar.classList.remove('hide');
+            sidebar.classList.remove('show');
+            overlay.style.display = 'none';
+        }
+    });
+    window.addEventListener('resize', function() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('sidebar-overlay');
+        if (window.innerWidth < 992) {
+            sidebar.classList.add('hide');
+            overlay.style.display = 'none';
+        } else {
+            sidebar.classList.remove('hide');
+            sidebar.classList.remove('show');
+            overlay.style.display = 'none';
+        }
+    });
+    </script>
 
 </html>
