@@ -1,4 +1,4 @@
-<nav class="bg-success text-white navbar navbar-expand navbar-light shadow-sm sticky-top">
+<nav class="bg-dark text-white navbar navbar-expand navbar-light shadow-sm sticky-top pb-4">
     <div class="container-fluid">
 
 
@@ -16,7 +16,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">
                     <span
-                        class="d-none d-md-inline text-gray-700"><?php echo htmlspecialchars($_SESSION['firstName'] . " " . $_SESSION['lastName']) ?></span>
+                        class="d-none d-md-inline text-white"><?php echo htmlspecialchars($_SESSION['firstName'] . " " . $_SESSION['lastName']) ?></span>
                 </a>
             </li>
         </ul>

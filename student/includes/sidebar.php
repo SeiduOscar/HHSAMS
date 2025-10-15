@@ -1,12 +1,12 @@
-<div class="sidebar-header p-4 border-bottom border-secondary">
+<div class="sidebar-header p-4 border-bottom border-secondary ">
 
     <div class="d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center text-white">
             <div class="bg-primary rounded-circle p-2 mr-3">
                 <i class="fas fa-user text-white"></i>
             </div>
             <div>
-                <h5 class="mb-0 font-weight-bold" id="student-name">
+                <h5 class="mb-0 font-weight-bold text-white" id="student-name">
 
                     <!-- <?php
                     $studNo = $_SESSION['admissionNumber'];

@@ -500,7 +500,7 @@ $absent = array_reverse($absent);
                                     // Generate the QR code link
                                     $lecturer_id = $_SESSION['userId'];
 
-                                    $link = "https://192.168.81.143/Student-Attendance-Management-System-main/recognition/index.php?userId=" . $lecturer_id . "&courseName=" . urlencode($coursename) . "&classarm=" . urlencode($classArm) . "&token=" . $token;
+                                    $link = "https://172.16.3.56 /Student-Attendance-Management-System-main/recognition/index.php?userId=" . $lecturer_id . "&courseName=" . urlencode($coursename) . "&classarm=" . urlencode($classArm) . "&token=" . $token;
                                     $encodedLink = htmlspecialchars($link, ENT_QUOTES, 'UTF-8');
                                     //   echo $link;
                                     // ✅ Get course details and level quering
